@@ -26,14 +26,14 @@
                 </div>
             </v-card>
          </v-col>
-         <v-col align="center" @click="route('admin/cases')" >
+         <v-col align="center" @click="route('donate')" >
                <v-card height="250" width="250" elevation="5" align="center" style="cursor:pointer">
                 <v-icon size="120">mdi-text-box-search-outline</v-icon>
                 <div class="text-h5">
-                   <b>Donors</b>
+                   <b>Donation</b>
                 </div>
                 <div class="text-h3 green--text pt-5">
-                    <b></b>
+                    <b>{{donation.length}}</b>
                 </div>
             </v-card>
          </v-col>
@@ -48,20 +48,40 @@
                 </div>
        </v-card>
        </div>
+       <div>
+         <v-row>
+           <v-col>
+             Download Donation List Report
+              <JsonExcel :data="donation" name="donation.xls">
+                <v-btn>Download</v-btn>
+              </JsonExcel>
+           </v-col>
+           <v-col>
+             Download Case Report
+              <JsonExcel :data="search_list" name="cases.xls">
+                <v-btn>Download</v-btn>
+              </JsonExcel>
+           </v-col>
+         </v-row>
+       </div>
   </div>
 </template>
 
 <script>
 import PieChart from "./PieChart.js";
+import JsonExcel from 'vue-json-excel'
 export default {
     components:{
         PieChart,
+        JsonExcel
     },
     created(){
+      this.donateGetall()
         this.loadData()
     },
     data(){
         return{
+        donation:[],
         chartData1: {
         responsive:false,
         hoverBackgroundColor: "red",
@@ -118,6 +138,19 @@ export default {
                 .then((res) => {
                 console.log(res.data);
                 this.users = res.data;
+                
+                });
+        },
+        async donateGetall(){
+            const res = await this.$axios
+                .get(`/donate/`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+                })
+                .then((res) => {
+                console.log(res.data);
+                this.donation = res.data;
                 
                 });
         },

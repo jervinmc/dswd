@@ -9,40 +9,19 @@
       <v-card-actions>
         <v-row align="center">
             <v-col align="end">
-                <v-btn color="red" text @click="isCategory=false"> Cancel </v-btn>
+                <v-btn color="red" text @click="deleteConfirmation=false"> Cancel </v-btn>
             </v-col>
             <v-col>
-                <v-btn color="success" text :loading="buttonLoad" @click="submitCategory"> Confirm </v-btn>
+                <v-btn color="success" text :loading="buttonLoad" @click="deleteValue"> Confirm </v-btn>
             </v-col>
         </v-row>
       </v-card-actions>
     </v-card>
   </v-dialog>
-  <v-dialog v-model="isCategory" width="500" persistent>
-    <v-card class="pa-10">
-    <div align="center" class="text-h6">Category</div>
-    <div align="center" class="pa-10">
-        Please select category.
-    </div>
-    <div>
-        <v-select outlined :items="['Category1','Category2','Category3']"  v-model="category" ></v-select>
-    </div>
-      <v-card-actions>
-        <v-row align="center">
-            <v-col align="end">
-                <v-btn color="red" text @click="isCategory=false"> Cancel </v-btn>
-            </v-col>
-            <v-col>
-                <v-btn color="success" text :loading="buttonLoad" @click="submitCategory"> Confirm </v-btn>
-            </v-col>
-        </v-row>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
-    <!-- <beneficiaries-add :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd" /> -->
+    <beneficiaries-add :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd" />
     <v-row>
       <v-col align="start" class="pa-10 text-h5" cols="auto">
-        <b>Users Management</b>
+        <b>4PS Management</b>
       </v-col>
       <v-spacer></v-spacer>
       <!-- <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff'">
@@ -66,10 +45,10 @@
       :items="events"
       :loading="isLoading"
     >
-     <template v-slot:[`item.is_active`]="{ item }">
+     <template v-slot:[`item.status`]="{ item }">
         <div>
-          <v-chip align="center" :style="getColorStatus(item.is_active)"
-            ><span>{{ item.is_active ? 'Activated' : 'Deactivated' }} </span></v-chip
+          <v-chip align="center" :style="getColorStatus(item.status)"
+            ><span>{{ item.status }} </span></v-chip
           >
         </div>
       </template>
@@ -97,12 +76,17 @@
           <v-list dense>
             <v-list-item @click.stop="status(item,'activate')">
               <v-list-item-content>
-                <v-list-item-title>Activate</v-list-item-title>
+                <v-list-item-title>Approve</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
             <v-list-item @click.stop="status(item,'deactivate')">
               <v-list-item-content>
-                <v-list-item-title>Deactivate</v-list-item-title>
+                <v-list-item-title>Disapprove</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item @click.stop="setCategory(item)">
+              <v-list-item-content>
+                <v-list-item-title>Set Category</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -113,15 +97,17 @@
 </template>
 
 <script>
-
+// import BeneficiariesAdd from './BeneficiariesAdd.vue';
 
 export default {
+    // components:{
+    //     BeneficiariesAdd
+    // },
   created() {
     this.loadData();
   },
   data() {
     return {
-    category:'',
       buttonLoad:false,
       account_type:'',
       deleteConfirmation:false,
@@ -131,24 +117,22 @@ export default {
       isLoading: false,
       users: [],
       dialogAdd:false,
-      isCategory:false,
       isAdd:true,
       headers: [
         { text: "ID", value: "id" },
         { text: "Firstname", value: "firstname" },
         { text: "Lastname", value: "lastname" },
-        { text: "Email", value: "email" },
-        { text: "Status", value: "is_active" },
-        { text: "Action", value: "opt" },
+        { text: "Status", value: "status" },
+        { text: "Actions", value: "opt" },
         ,
       ],
     };
   },
   methods: {
-      status(item,status){
+       status(item,status){
     this.buttonLoad=true
-      this.$axios.patch(`/users/user/${item.id}/`,{
-          is_active: status=='activate' ? true : false
+      this.$axios.patch(`/beneficiaries/${item.id}/`,{
+          status: status=='activate' ? 'Approved' : 'Disapproved'
       },{
         headers:{
           Authorization:`Bearer ${localStorage.getItem('token')}`
@@ -160,51 +144,17 @@ export default {
         //   alert('Successfully Deleted!')
           this.loadData()
       })
-      },
-      approve(item){
-
-        this.buttonLoad=true
-      this.$axios.patch(`/cases/${this.selectedItem.id}/`,{
-          category:this.category
-      },{
-        headers:{
-          Authorization:`Bearer ${localStorage.getItem('token')}`
-        }
-      })
-      .then(()=>{
-          this.isCategory=false
-          this.buttonLoad=false
-        //   alert('Successfully Deleted!')
-          this.loadData()
-      })
-      },
-    async  submitCategory() {
-        this.buttonLoad=true
-      this.$axios.patch(`/cases/${this.selectedItem.id}/`,{
-          category:this.category
-      },{
-        headers:{
-          Authorization:`Bearer ${localStorage.getItem('token')}`
-        }
-      })
-      .then(()=>{
-          this.isCategory=false
-          this.buttonLoad=false
-        //   alert('Successfully Deleted!')
-          this.loadData()
-      })
-      },
-        setCategory(item){
-            this.isCategory =true
-            this.selectedItem = item
       },
     getColorStatus(item) {
-      if (item) {
-        return "background-color:green;border-radius:15px;padding:7px; width:150px; color:white;";
+    if (item == "Pending") {
+        return "background-color:#FFF5CC;border-radius:15px;padding:7px; width:150px; color: #344557;";
+      }
+      else if(item =='Approved'){
+          return "background-color:green;border-radius:15px;padding:7px; width:150px; color:white;";
       } else  { 
         return "background-color:red;border-radius:15px;padding:7px; width:150px; color: white;";
       } 
-    
+      
     },
     async deleteValue(){
      this.buttonLoad=true
@@ -242,7 +192,7 @@ export default {
     //   this.isLoading = true;
     //   const res = await this.$axios
     //     .patch(
-    //       `/announcement/${data.id}/`,
+    //       `/beneficiaries/${data.id}/`,
     //       {
     //         is_active: status == "Deactivate" ? false : true,
     //       },
@@ -263,7 +213,7 @@ export default {
     async eventsGetall() {
       this.isLoading = true;
       const res = await this.$axios
-        .get(`/users/user/`, {
+        .get(`/ps/`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

@@ -215,6 +215,16 @@ export default {
           title: "SAP",
           to: "/sap",
         },
+        {
+          icon: "mdi-account-group",
+          title: "4Ps",
+          to: "/4ps",
+        },
+        {
+          icon: "mdi-account-group",
+          title: "Donate",
+          to: "/donate",
+        },
       ],
       items: [
         {
@@ -234,8 +244,8 @@ export default {
         },
         {
           icon: "mdi-account-group",
-          title: "Donors",
-          to: "/admin/donors",
+          title: "Donate",
+          to: "/admin/donate",
         },
         {
           icon: "mdi-alert",
@@ -246,6 +256,11 @@ export default {
           icon: "mdi-alert",
           title: "SAP",
           to: "/admin/sap",
+        },
+        {
+          icon: "mdi-alert",
+          title: "4PS",
+          to: "/admin/4ps",
         },
         {
           icon: "mdi-home",
