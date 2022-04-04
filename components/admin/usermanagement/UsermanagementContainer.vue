@@ -41,10 +41,12 @@
   </v-dialog>
     <!-- <beneficiaries-add :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd" /> -->
     <v-row>
-      <v-col align="start" class="pa-10 text-h5" cols="auto">
+      <v-col align="start" class="pa-10 text-h5" >
         <b>Users Management</b>
       </v-col>
-      <v-spacer></v-spacer>
+      <v-col align-self="center" class="pa-10 ">
+        <v-text-field placeholder="search" outlined v-model="search"></v-text-field>
+      </v-col>
       <!-- <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff'">
         <v-btn
           class="rnd-btn"
@@ -62,6 +64,7 @@
     </v-row>
     <v-data-table
       class="pa-5"
+      :search="search"
       :headers="headers"
       :items="events"
       :loading="isLoading"
@@ -121,6 +124,7 @@ export default {
   },
   data() {
     return {
+      search:'',
     category:'',
       buttonLoad:false,
       account_type:'',

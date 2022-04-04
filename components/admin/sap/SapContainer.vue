@@ -20,7 +20,7 @@
   </v-dialog>
   <v-dialog v-model="viewDetails" width="1000" persistent>
     <v-card class="pa-10">
-        <v-data-table :items="sap_items" :headers="sap_headers">
+        <v-data-table :items="sap_items" :headers="sap_headers" :search="search">
         </v-data-table>
 
             <v-card-actions>
@@ -61,7 +61,6 @@
       <v-col align="start" class="pa-10 text-h5" cols="auto">
         <b>SAP Management</b>
       </v-col>
-      <v-spacer></v-spacer>
       <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff'">
         <v-btn
           class="rnd-btn"   
@@ -77,6 +76,9 @@
         </v-btn>
       </v-col>
     </v-row>
+       <v-col align-self="center" class="pa-10 ">
+        <v-text-field placeholder="search" outlined v-model="search"></v-text-field>
+      </v-col>
     <v-data-table
       class="pa-5"
       :headers="headers"
@@ -148,6 +150,7 @@ export default {
   },
   data() {
     return {
+      search:'',
       viewDetails:false,
     category:'',
       buttonLoad:false,

@@ -191,7 +191,7 @@
                 <v-col cols="4">
                     <div>Case Category</div>
                     <div>
-                    <v-select outlined v-model="users.case_category" :items="['Male','Female']"></v-select>
+                    <v-select outlined v-model="users.case_category" :items="['Child','Women','Men']"></v-select>
                     </div>
                   </v-col>
               </v-row>
@@ -584,10 +584,12 @@
   </v-dialog>
     <!-- <beneficiaries-add :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd" /> -->
     <v-row>
-      <v-col align="start" class="pa-10 text-h5" cols="auto">
+      <v-col align="start" class="pa-10 text-h5" >
         <b>Cases Management</b>
       </v-col>
-      <v-spacer></v-spacer>
+       <v-col align-self="center" class="pa-10 ">
+        <v-text-field placeholder="search" outlined v-model="search"></v-text-field>
+      </v-col>
       <!-- <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff'">
         <v-btn
           class="rnd-btn"
@@ -604,6 +606,7 @@
       </v-col> -->
     </v-row>
     <v-data-table
+    :search="search"
       class="pa-5"
       :headers="headers"
       :items="events"
@@ -674,6 +677,7 @@ export default {
   },
   data() {
     return {
+      search:'',
       viewDetails:false,
     category:'',
       buttonLoad:false,
@@ -692,7 +696,7 @@ export default {
         { text: "Firstname", value: "firstname" },
         { text: "Lastname", value: "lastname" },
         { text: "Remarks", value: "remarks" },
-        { text: "Category", value: "category" },
+        { text: "Category", value: "case_category" },
         { text: "Status", value: "status" },
         { text: "Action", value: "opt" },
         ,

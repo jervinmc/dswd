@@ -20,10 +20,12 @@
   </v-dialog>
     <beneficiaries-add :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd" />
     <v-row>
-      <v-col align="start" class="pa-10 text-h5" cols="auto">
+      <v-col align="start" class="pa-10 text-h5" >
         <b>4PS Management</b>
       </v-col>
-      <v-spacer></v-spacer>
+          <v-col align-self="center" class="pa-10 ">
+        <v-text-field placeholder="search" outlined v-model="search"></v-text-field>
+      </v-col>
       <!-- <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff'">
         <v-btn
           class="rnd-btn"
@@ -39,7 +41,9 @@
         </v-btn>
       </v-col> -->
     </v-row>
+    <ps-add :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd"  />
     <v-data-table
+      :search="search"
       class="pa-5"
       :headers="headers"
       :items="events"
@@ -74,6 +78,11 @@
             </v-btn>
           </template>
           <v-list dense>
+            <v-list-item @click.stop="viewItem(item,'activate')">
+              <v-list-item-content>
+                <v-list-item-title>View</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
             <v-list-item @click.stop="status(item,'activate')">
               <v-list-item-content>
                 <v-list-item-title>Approve</v-list-item-title>
@@ -97,9 +106,11 @@
 </template>
 
 <script>
+import PsAdd from './PsAdd.vue';
 // import BeneficiariesAdd from './BeneficiariesAdd.vue';
 
 export default {
+  components: { PsAdd },
     // components:{
     //     BeneficiariesAdd
     // },
@@ -108,6 +119,7 @@ export default {
   },
   data() {
     return {
+      search:'',
       buttonLoad:false,
       account_type:'',
       deleteConfirmation:false,
@@ -129,6 +141,11 @@ export default {
     };
   },
   methods: {
+    viewItem(item,s){
+      this.isAdd=false
+      this.selectedItem = item
+      this.dialogAdd=true
+    },
        status(item,status){
     this.buttonLoad=true
       this.$axios.patch(`/beneficiaries/${item.id}/`,{

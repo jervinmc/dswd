@@ -45,7 +45,7 @@
            <v-col cols="12">
             <div>Category</div>
             <div>
-              <v-select outlined v-model="users.category" :items="['Women','Child','Men']"></v-select>
+              <v-select outlined v-model="users.case_category" :items="['Women','Child','Men']"></v-select>
             </div>
           </v-col>
           <v-col>
@@ -265,6 +265,7 @@ export default {
         }
         form_data.append('status', 'Pending')
         form_data.append('firstname', this.users.firstname)
+        form_data.append('case_category', this.users.case_category)
         form_data.append('middlename', this.users.middlename)
         form_data.append('lastname', this.users.lastname)
         form_data.append('bithplace', this.users.bithplace)

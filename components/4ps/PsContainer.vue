@@ -21,7 +21,7 @@
    <ps-add  :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd"   />
     <v-row>
       <v-col align="start" class="pa-10 text-h5" cols="auto">
-        <b>Donate Management</b>
+        <b>4PS Management</b>
       </v-col>
       <v-spacer></v-spacer>
       <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff'">
@@ -35,7 +35,7 @@
           width="190"
           @click="addItem"
         >
-          <span class="text-none">Donate</span>
+          <span class="text-none">Request 4ps</span>
         </v-btn>
       </v-col>
     </v-row>
@@ -117,7 +117,6 @@ export default {
         { text: "ID", value: "id" },
         { text: "Firstname", value: "firstname" },
         { text: "Lastname", value: "lastname" },
-        { text: "Occupation", value: "occupation" },
         { text: "Status", value: "status" },
         ,
       ],
@@ -192,7 +191,7 @@ export default {
     async eventsGetall() {
       this.isLoading = true;
       const res = await this.$axios
-        .get(`/donate_id/id/`, {
+        .get(`/ps_id/id/`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

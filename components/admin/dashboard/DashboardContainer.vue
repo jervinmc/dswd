@@ -185,6 +185,9 @@ export default {
         .then((res) => {
           console.log(res.data);
           this.search_list = res.data;
+          this.search_list = this.search_list.filter(data=>data.status=='approved')
+          console.log('okay')
+          console.log(this.search_list)
           // this.search_list.map(item=>{
 
           //         // this.chartData1.labels.push(item.category)

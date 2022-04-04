@@ -28,6 +28,12 @@
         </div>
       </v-col>
       <v-col cols="12" class="px-0">
+        <div>Beneficiaries Type</div>
+        <div>
+          <v-select outlined :items="['Burial','Medical','Educational']" v-model="events.beneficiaries_type"></v-select>
+        </div>
+      </v-col>
+      <v-col cols="12" class="px-0">
         <div>Location</div>
         <div>
           <v-text-field :items="selection" outlined v-model="events.location"></v-text-field>
@@ -108,6 +114,7 @@ export default {
         form_data.append("middlename", this.events.middlename);
         form_data.append("firstname", this.events.firstname);
         form_data.append("occupation", this.events.occupation);
+        form_data.append("beneficiaries_type", this.events.beneficiaries_type);
         form_data.append("status", "Pending");
         form_data.append("location", this.events.location);
         if (this.isAdd) {
