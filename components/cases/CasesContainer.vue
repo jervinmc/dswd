@@ -234,6 +234,19 @@ export default {
     }
   },
   methods: {
+     timestamp() {
+      var today = new Date();
+      var date =
+        today.getFullYear() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getDate();
+      var time = today.getHours() + ":" + today.getMinutes();
+      var dateTime = date
+
+      return dateTime;
+    },
       onFileUpload(e) {
       this.image = e
       e = e.target.files[0]
@@ -278,6 +291,7 @@ export default {
         form_data.append('attended', this.users.attended)
         form_data.append('birthplace', this.users.birthplace)
         form_data.append('fathername', this.users.fathername)
+        form_data.append("date_start", this.timestamp());
         form_data.append('birthplace_father', this.users.birthplace_father)
         form_data.append('occupation_father', this.users.occupation_father)
         form_data.append('mothername', this.users.mothername)

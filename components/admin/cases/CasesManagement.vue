@@ -184,7 +184,11 @@
             </v-col>
           </v-row>
           <v-divider></v-divider>
+           <div class="text-h6"><b>Type of Intervention</b></div>
           <div>
+            <v-select outlined v-model="users.intervention" :items="['Intake Interview','Letter of Invitation','Briefing / Preparation to Client for Procedural Proceedings','Meditation Dialogue','Home Visitation','Reunification / Re-integration to Family','Intervention/Prevention Proceedings','Rescue Operation','Social Case Study Report','Travel Clearance','Mediation Conference']"></v-select>
+          </div>
+          <div v-if="users.intervention!='' && users.intervention!=undefined">
             <div class="text-h6"><b>Category</b></div>
             <div class="pt-5">
               <v-row>
@@ -256,20 +260,16 @@
                   </v-row>
             </div>
           </div>
-          <div class="text-h6"><b>Source of Referral</b></div>
-          <div>
+          <div v-if="users.intervention!='' && users.intervention!=undefined" class="text-h6"><b>Source of Referral</b></div>
+          <div v-if="users.intervention!='' && users.intervention!=undefined">
             <v-select outlined v-model="users.source_of_referral" :items="['Walk in','MSWDO/CSWDO','PNP/WCPD','Womens Desk','Others']"></v-select>
           </div>
-          <div class="text-h6"><b>Assigning Social Worker</b></div>
-          <div>
+          <div v-if="users.intervention!='' && users.intervention!=undefined" class="text-h6"><b>Assigning Social Worker</b></div>
+          <div v-if="users.intervention!='' && users.intervention!=undefined">
             <v-select outlined v-model="users.social_worker" :items="['E. Alvarez','F. Ortega','R. Mendoza','Others']"></v-select>
           </div>
-          <div class="text-h6"><b>Type of Intervention</b></div>
-          <div>
-            <v-select outlined v-model="users.intervention" :items="['Intake Interview','Letter of Invitation','Briefing / Preparation to Client for Procedural Proceedings','Meditation Dialogue','Home Visitation','Reunification / Re-integration to Family','Intervention/Prevention Proceedings','Rescue Operation','Social Case Study Report','Travel Clearance','Mediation Conference']"></v-select>
-          </div>
-          <div class="text-h6"><b>Referral</b></div>
-          <div>
+          <div v-if="users.intervention!='' && users.intervention!=undefined" class="text-h6"><b>Referral</b></div>
+          <div v-if="users.intervention!='' && users.intervention!=undefined">
             <v-select outlined v-model="users.referral" :items="['Medico Legal Exam','Temporary Shelter','MSWDO/ CSWDO','Refer to DSWD Region IV-A','Medical Check up','Refer to Court / PAO','LGU-Case Management','Refer to city Health Office','PNP/WCPD (Inquiry, Blotter, Case Filing)','Psychological Evaluation','Legal Assistance','Others']"></v-select>
           </div>
           <!-- <div v-if="users.category=='Women'">
@@ -587,9 +587,42 @@
       <v-col align="start" class="pa-10 text-h5" >
         <b>Cases Management</b>
       </v-col>
-       <v-col align-self="center" class="pa-10 ">
+       <v-row>
+        <v-col align-self="center" class="pa-10 ">
         <v-text-field placeholder="search" outlined v-model="search"></v-text-field>
       </v-col>
+       <v-col class="pa-10 ">
+          <v-menu
+          class="pa-0"
+          ref="eventDate"
+          v-model="eventDate"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          max-width="290px"
+          min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+            hide-details=""
+              v-model="date"
+              outlined
+              label="Date"
+              persistent-hint
+              v-bind="attrs"
+              @blur="date = date"
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            @change="changeDate"
+            v-model="date"
+            no-title
+            range
+          ></v-date-picker>
+        </v-menu>
+       </v-col>
+     </v-row>
       <!-- <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff'">
         <v-btn
           class="rnd-btn"
@@ -609,7 +642,7 @@
     :search="search"
       class="pa-5"
       :headers="headers"
-      :items="events"
+      :items="items_all"
       :loading="isLoading"
     >
      <template v-slot:[`item.status`]="{ item }">
@@ -646,21 +679,6 @@
                 <v-list-item-title>View</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item @click.stop="approve(item)">
-              <v-list-item-content>
-                <v-list-item-title>Approve</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item @click.stop="deleteItem(item)">
-              <v-list-item-content>
-                <v-list-item-title>Disapprove</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item @click.stop="setCategory(item)">
-              <v-list-item-content>
-                <v-list-item-title>Set Category</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
           </v-list>
         </v-menu>
       </template>
@@ -677,6 +695,8 @@ export default {
   },
   data() {
     return {
+      items_all:[],
+      date:[],
       search:'',
       viewDetails:false,
     category:'',
@@ -697,6 +717,7 @@ export default {
         { text: "Lastname", value: "lastname" },
         { text: "Remarks", value: "remarks" },
         { text: "Category", value: "case_category" },
+        { text: "Date", value: "date_start" },
         { text: "Status", value: "status" },
         { text: "Action", value: "opt" },
         ,
@@ -704,8 +725,20 @@ export default {
     };
   },
   methods: {
+    changeDate(){
+          this.items_all = []
+           for(let key in this.events){
+          if(new Date(this.date[0])<=new Date(this.events[key].date_start) && new Date(this.date[1])>=new Date(this.events[key].date_start)){
+             this.items_all.push(this.events[key])
+          }
+        } 
+      },
      editItem(){
         this.buttonLoad=true
+         var status = 'Pending'
+        if(this.users.intervention!='' && this.users.intervention!=undefined){
+          status = 'Approved'
+        }
       this.$axios.patch(`/cases/${this.users.id}/`,{
           perpetrator_name:this.users.perpetrator_name,
           perpetrator_nickname:this.users.perpetrator_nickname,
@@ -718,6 +751,7 @@ export default {
           source_of_referral:this.users.source_of_referral,
           social_worker:this.users.social_worker,
           intervention:this.users.intervention,
+          status:status,
           referral:this.users.referral,
       },{
         headers:{
@@ -853,6 +887,7 @@ export default {
         .then((res) => {
           console.log(res.data);
           this.events = res.data;
+          this.items_all = res.data;
           this.isLoading = false;
         });
     },

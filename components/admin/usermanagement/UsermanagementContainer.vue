@@ -274,7 +274,8 @@ export default {
         })
         .then((res) => {
           console.log(res.data);
-          this.events = res.data;
+
+          this.events = res.data.filter(data=>data.account_type !='Admin');
           this.isLoading = false;
         });
     },

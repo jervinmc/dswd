@@ -23,9 +23,42 @@
       <v-col align="start" class="pa-10 text-h5" >
         <b>4PS Management</b>
       </v-col>
-          <v-col align-self="center" class="pa-10 ">
+         <v-row>
+        <v-col align-self="center" class="pa-10 ">
         <v-text-field placeholder="search" outlined v-model="search"></v-text-field>
       </v-col>
+       <v-col class="pa-10 ">
+          <v-menu
+          class="pa-0"
+          ref="eventDate"
+          v-model="eventDate"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          max-width="290px"
+          min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+            hide-details=""
+              v-model="date"
+              outlined
+              label="Date"
+              persistent-hint
+              v-bind="attrs"
+              @blur="date = date"
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            @change="changeDate"
+            v-model="date"
+            no-title
+            range
+          ></v-date-picker>
+        </v-menu>
+       </v-col>
+     </v-row>
       <!-- <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff'">
         <v-btn
           class="rnd-btn"
@@ -46,7 +79,7 @@
       :search="search"
       class="pa-5"
       :headers="headers"
-      :items="events"
+      :items="items_all"
       :loading="isLoading"
     >
      <template v-slot:[`item.status`]="{ item }">
@@ -93,9 +126,9 @@
                 <v-list-item-title>Disapprove</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item @click.stop="setCategory(item)">
+            <v-list-item @click.stop="status(item,'Done')">
               <v-list-item-content>
-                <v-list-item-title>Set Category</v-list-item-title>
+                <v-list-item-title>Done</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -119,6 +152,8 @@ export default {
   },
   data() {
     return {
+      items_all:[],
+date:[],
       search:'',
       buttonLoad:false,
       account_type:'',
@@ -134,6 +169,7 @@ export default {
         { text: "ID", value: "id" },
         { text: "Firstname", value: "firstname" },
         { text: "Lastname", value: "lastname" },
+        { text: "Date", value: "date_start" },
         { text: "Status", value: "status" },
         { text: "Actions", value: "opt" },
         ,
@@ -141,6 +177,14 @@ export default {
     };
   },
   methods: {
+    changeDate(){
+          this.items_all = []
+           for(let key in this.events){
+          if(new Date(this.date[0])<=new Date(this.events[key].date_start) && new Date(this.date[1])>=new Date(this.events[key].date_start)){
+             this.items_all.push(this.events[key])
+          }
+        } 
+      },
     viewItem(item,s){
       this.isAdd=false
       this.selectedItem = item
@@ -148,8 +192,8 @@ export default {
     },
        status(item,status){
     this.buttonLoad=true
-      this.$axios.patch(`/beneficiaries/${item.id}/`,{
-          status: status=='activate' ? 'Approved' : 'Disapproved'
+      this.$axios.patch(`/ps/${item.id}/`,{
+          status: status=='activate' ? 'Approved' : status=='deactivate' ? 'Disapproved' : 'Done'
       },{
         headers:{
           Authorization:`Bearer ${localStorage.getItem('token')}`
@@ -168,8 +212,11 @@ export default {
       }
       else if(item =='Approved'){
           return "background-color:green;border-radius:15px;padding:7px; width:150px; color:white;";
-      } else  { 
+      } else if(item=='Disapproved') { 
         return "background-color:red;border-radius:15px;padding:7px; width:150px; color: white;";
+      } 
+      else  { 
+        return "background-color:grey;border-radius:15px;padding:7px; width:150px; color: white;";
       } 
       
     },
@@ -238,7 +285,18 @@ export default {
         .then((res) => {
           console.log(res.data);
           this.events = res.data;
+          this.items_all = res.data;
           this.isLoading = false;
+          console.log(res.data);
+          this.events = res.data;
+          this.isLoading = false;
+          if(this.$route.query.id!=undefined){
+            for(let key in this.events){
+              if(this.events[key].id==this.$route.query.id){
+                this.viewItem(this.events[key],'')
+              }
+            }
+          }
         });
     },
   },

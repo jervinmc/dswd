@@ -5,9 +5,9 @@
       </div>
      <v-row class="pt-5">
          <v-col align="center" @click="route('usermanagement')" >
-            <v-card height="250" width="250" elevation="5" align="center" style="cursor:pointer">
-                <v-icon size="120">mdi-account-multiple</v-icon>
-                <div class="text-h5">
+            <v-card height="170" width="170" elevation="5" align="center" style="cursor:pointer">
+                <v-icon size="60">mdi-account-multiple</v-icon>
+                <div class="text-h6">
                    <b> Users</b>
                 </div>
                 <div class="text-h3 green--text pt-5">
@@ -16,9 +16,9 @@
             </v-card>
          </v-col>
          <v-col align="center" @click="route('cases')" >
-               <v-card height="250" width="250" elevation="5" align="center" style="cursor:pointer">
-                <v-icon size="120">mdi-text-box-search-outline</v-icon>
-                <div class="text-h5">
+               <v-card height="170" width="170" elevation="5" align="center" style="cursor:pointer">
+                <v-icon size="60">mdi-text-box-search-outline</v-icon>
+                <div class="text-h6">
                    <b>Case Report</b>
                 </div>
                 <div class="text-h3 green--text pt-5">
@@ -27,13 +27,46 @@
             </v-card>
          </v-col>
          <v-col align="center" @click="route('donate')" >
-               <v-card height="250" width="250" elevation="5" align="center" style="cursor:pointer">
-                <v-icon size="120">mdi-text-box-search-outline</v-icon>
-                <div class="text-h5">
+               <v-card height="170" width="170" elevation="5" align="center" style="cursor:pointer">
+                <v-icon size="60">mdi-text-box-search-outline</v-icon>
+                <div class="text-h6">
                    <b>Donation</b>
                 </div>
                 <div class="text-h3 green--text pt-5">
                     <b>{{donation.length}}</b>
+                </div>
+            </v-card>
+         </v-col>
+          <v-col align="center" @click="route('donate')" >
+               <v-card height="170" width="170" elevation="5" align="center" style="cursor:pointer">
+                <v-icon size="60">mdi-text-box-search-outline</v-icon>
+                <div class="text-h6">
+                   <b>Approved 4ps</b>
+                </div>
+                <div class="text-h3 green--text pt-5">
+                    <b>{{ps_list.length}}</b>
+                </div>
+            </v-card>
+         </v-col>
+          <!-- <v-col align="center" @click="route('donate')" >
+               <v-card height="170" width="170" elevation="5" align="center" style="cursor:pointer">
+                <v-icon size="60">mdi-text-box-search-outline</v-icon>
+                <div class="text-h6">
+                   <b>Approved Cases</b>
+                </div>
+                <div class="text-h3 green--text pt-5">
+                    <b>{{donation.length}}</b>
+                </div>
+            </v-card>
+         </v-col> -->
+          <v-col align="center" @click="route('donate')" >
+               <v-card height="170" width="170" elevation="5" align="center" style="cursor:pointer">
+                <v-icon size="60">mdi-text-box-search-outline</v-icon>
+                <div class="text-h6">
+                   <b>Approved SAP</b>
+                </div>
+                <div class="text-h3 green--text pt-5">
+                    <b>{{sap_list.length}}</b>
                 </div>
             </v-card>
          </v-col>
@@ -81,7 +114,9 @@ export default {
     },
     data(){
         return{
+        
         donation:[],
+        ps_list:[],
         chartData1: {
         responsive:false,
         hoverBackgroundColor: "red",
@@ -95,11 +130,13 @@ export default {
           }
         ]
       },
+      sap_list:[],
       chartData: {
         responsive:false,
         hoverBackgroundColor: "red",
         hoverBorderWidth: 10,
         chart_data1:false,
+        sap_list:[],
         labels: [],
         datasets: [
           {
@@ -121,12 +158,56 @@ export default {
         }
     },
     methods:{
+     async psGetall(){
+          const res = await this.$axios
+        .get(`/ps/`, {
+         headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.ps_list = res.data;
+          this.ps_list = this.ps_list.filter(data=>data.status=='Approved')
+          console.log('okays')
+          console.log(this.ps_list)
+          // this.search_list.map(item=>{
+
+          //         // this.chartData1.labels.push(item.category)
+          //         this.chartData1.datasets[40].data[0]=1
+              
+          // })
+        });
+      },
+      async sapGetall(){
+          const res = await this.$axios
+        .get(`/sap/`, {
+         headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.sap_list = res.data;
+          this.sap_list = this.sap_list.filter(data=>data.status=='Approved')
+          console.log('okayss')
+          console.log(this.sap_list)
+          // this.search_list.map(item=>{
+
+          //         // this.chartData1.labels.push(item.category)
+          //         this.chartData1.datasets[40].data[0]=1
+              
+          // })
+        });
+      },
         route(val){
             this.$router.push('/admin/'+val)
         },
         loadData(){
                 this.searchGetall()
                 this.usersGetall()
+                this.psGetall()
+                this.sapGetall()
         },
        async usersGetall(){
             const res = await this.$axios

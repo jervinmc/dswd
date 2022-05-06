@@ -2,7 +2,7 @@
 <v-form ref="form">
   <v-dialog v-model="isOpen" width="1000" persistent>
     <v-card class="pa-10">
-      <div align="center" class="text-h6">Request Beneficiaries</div>
+      <div align="center" class="text-h6">Donate</div>
       <v-col cols="12" class="px-0">
         <div>Lastname</div>
         <div>
@@ -103,6 +103,19 @@ export default {
     };
   },
   methods: {
+     timestamp() {
+      var today = new Date();
+      var date =
+        today.getFullYear() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getDate();
+      var time = today.getHours() + ":" + today.getMinutes();
+      var dateTime = date
+
+      return dateTime;
+    },
     async addEvents() {
       this.buttonLoad = true;
       try {
@@ -116,6 +129,7 @@ export default {
         form_data.append("occupation", this.events.occupation);
         form_data.append("beneficiaries_type", this.events.beneficiaries_type);
         form_data.append("status", "Pending");
+        form_data.append("date_start", this.timestamp());
         form_data.append("location", this.events.location);
         if (this.isAdd) {
           const response = await this.$axios

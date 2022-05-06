@@ -24,7 +24,7 @@
         <b>4PS Management</b>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff'">
+      <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff' && is_show_request">
         <v-btn
           class="rnd-btn"
           rounded
@@ -93,7 +93,6 @@
 
 <script>
 import PsAdd from './PsAdd.vue';
-
 export default {
     components:{
         PsAdd
@@ -107,6 +106,7 @@ export default {
       account_type:'',
       deleteConfirmation:false,
       selectedItem:[],
+      is_show_request:false,
         events:[],
       selectedItem:{},
       isLoading: false,
@@ -123,6 +123,14 @@ export default {
     };
   },
   methods: {
+     async  checkSAP(){
+    this.$axios.get(`/checkSAP/${localStorage.getItem('id')}/`,{headers:{
+          Authorization:`Bearer ${localStorage.getItem('token')}`
+        }})
+        .then((res)=>{
+          this.is_show_request = res.data
+        })
+    },
      getColorStatus(item) {
     if (item == "Pending") {
         return "background-color:#FFF5CC;border-radius:15px;padding:7px; width:150px; color: #344557;";
@@ -189,6 +197,7 @@ export default {
       this.eventsGetall();
     },
     async eventsGetall() {
+      this.checkSAP()
       this.isLoading = true;
       const res = await this.$axios
         .get(`/ps_id/id/`, {

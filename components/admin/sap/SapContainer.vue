@@ -20,7 +20,10 @@
   </v-dialog>
   <v-dialog v-model="viewDetails" width="1000" persistent>
     <v-card class="pa-10">
-        <v-data-table :items="sap_items" :headers="sap_headers" :search="search">
+        <v-data-table :items="sap_items" :headers="sap_headers" >
+            <template #[`item.image`]="{ item }">
+        <v-img :src="item.image" height="100" width="100"></v-img>
+      </template>
         </v-data-table>
 
             <v-card-actions>
@@ -83,6 +86,7 @@
       class="pa-5"
       :headers="headers"
       :items="events"
+      :search="search"
       :loading="isLoading"
     >
      <template v-slot:[`item.status`]="{ item }">
@@ -173,7 +177,8 @@ export default {
       ],
       sap_headers: [
         { text: "ID", value: "id" },
-        { text: "Fullname", value: "fullname" },
+        { text: "Firstname", value: "firstname" },
+        { text: "Lastname", value: "lastname" },
         { text: "Gender", value: "gender" },
         { text: "Address", value: "address" },
         { text: "Occupation", value: "occupation" },

@@ -21,6 +21,12 @@
           <v-text-field outlined v-model="events.middlename"></v-text-field>
         </div>
       </v-col>
+       <v-col cols="12" class="px-0">
+        <div>Category</div>
+        <div>
+          <v-select outlined v-model="events.category" :items="['Clothes','Cash','Food']"></v-select>
+        </div>
+      </v-col>
       <v-col cols="12" class="px-0">
         <div>Remarks</div>
         <div>
@@ -91,6 +97,19 @@ export default {
     };
   },
   methods: {
+     timestamp() {
+      var today = new Date();
+      var date =
+        today.getFullYear() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getDate();
+      var time = today.getHours() + ":" + today.getMinutes();
+      var dateTime = date
+
+      return dateTime;
+    },
     async addEvents() {
       this.buttonLoad = true;
       try {
@@ -104,6 +123,8 @@ export default {
         form_data.append("remarks", this.events.remarks);
         form_data.append("status", "Pending");
         form_data.append("location", this.events.location);
+        form_data.append("category", this.events.category);
+        form_data.append("date_start", this.timestamp());
         if (this.isAdd) {
           const response = await this.$axios
             .post("/donate/", form_data, {

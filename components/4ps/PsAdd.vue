@@ -91,6 +91,19 @@ export default {
     };
   },
   methods: {
+    timestamp() {
+      var today = new Date();
+      var date =
+        today.getFullYear() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getDate();
+      var time = today.getHours() + ":" + today.getMinutes();
+      var dateTime = date 
+
+      return dateTime;
+    },
     async addEvents() {
       this.buttonLoad = true;
       try {
@@ -103,6 +116,7 @@ export default {
         form_data.append("firstname", this.events.firstname);
         form_data.append("remarks", this.events.remarks);
         form_data.append("status", "Pending");
+        form_data.append("date_start", this.timestamp());
         form_data.append("location", this.events.location);
         if (this.isAdd) {
           const response = await this.$axios

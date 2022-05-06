@@ -23,9 +23,42 @@
       <v-col align="start" class="pa-10 text-h5" >
         <b>Beneficiaries Management</b>
       </v-col>
-      <v-col align-self="center" class="pa-10 ">
+     <v-row>
+        <v-col align-self="center" class="pa-10 ">
         <v-text-field placeholder="search" outlined v-model="search"></v-text-field>
       </v-col>
+       <v-col class="pa-10 ">
+          <v-menu
+          class="pa-0"
+          ref="eventDate"
+          v-model="eventDate"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          max-width="290px"
+          min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+            hide-details=""
+              v-model="date"
+              outlined
+              label="Date"
+              persistent-hint
+              v-bind="attrs"
+              @blur="date = date"
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            @change="changeDate"
+            v-model="date"
+            no-title
+            range
+          ></v-date-picker>
+        </v-menu>
+       </v-col>
+     </v-row>
       <!-- <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff'">
         <v-btn
           class="rnd-btn"
@@ -45,7 +78,7 @@
     :search="search"
       class="pa-5"
       :headers="headers"
-      :items="events"
+      :items="items_all"
       :loading="isLoading"
     >
      <template v-slot:[`item.status`]="{ item }">
@@ -116,6 +149,7 @@ export default {
   },
   data() {
     return {
+      items_all:[],
       buttonLoad:false,
       account_type:'',
       deleteConfirmation:false,
@@ -125,6 +159,7 @@ export default {
       isLoading: false,
       users: [],
       dialogAdd:false,
+      date:[],
       isAdd:true,
       search:'',
       headers: [
@@ -132,6 +167,7 @@ export default {
         { text: "Firstname", value: "firstname" },
         { text: "Lastname", value: "lastname" },
         { text: "Occupation", value: "occupation" },
+        { text: "Date", value: "date_start" },
         { text: "Status", value: "status" },
         { text: "Actions", value: "opt" },
         ,
@@ -139,6 +175,14 @@ export default {
     };
   },
   methods: {
+     changeDate(){
+          this.items_all = []
+           for(let key in this.events){
+          if(new Date(this.date[0])<=new Date(this.events[key].date_start) && new Date(this.date[1])>=new Date(this.events[key].date_start)){
+             this.items_all.push(this.events[key])
+          }
+        } 
+      },
     viewItem(item,items){
       this.selectedItem = item
       this.dialogAdd = true
@@ -226,6 +270,8 @@ export default {
       this.eventsGetall();
     },
     async eventsGetall() {
+      
+      // alert(this.$route.params.id)
       this.isLoading = true;
       const res = await this.$axios
         .get(`/beneficiaries/`, {
@@ -236,7 +282,15 @@ export default {
         .then((res) => {
           console.log(res.data);
           this.events = res.data;
+          this.items_all = res.data
           this.isLoading = false;
+          if(this.$route.query.id!=undefined){
+            for(let key in this.events){
+              if(this.events[key].id==this.$route.query.id){
+                this.viewItem(this.events[key],'')
+              }
+            }
+          }
         });
     },
   },

@@ -2,12 +2,18 @@
 <v-form ref="form">
   <v-dialog v-model="isOpen" width="1000" persistent>
     <v-card class="pa-10">
-      <div align="center" class="text-h6">Request Beneficiaries</div>
+      <div align="center" class="text-h6">Request SAP</div>
       <v-row>
           <v-col cols="6" class="px-5">
-        <div>Fullname</div>
+        <div>Firstname</div>
         <div>
-          <v-text-field outlined v-model="events.fullname"></v-text-field>
+          <v-text-field outlined v-model="events.firstname"></v-text-field>
+        </div>
+      </v-col>
+          <v-col cols="6" class="px-5">
+        <div>Lastname</div>
+        <div>
+          <v-text-field outlined v-model="events.lastname"></v-text-field>
         </div>
       </v-col>
       <v-col cols="6" class="px-5">
@@ -82,7 +88,7 @@
       <v-col cols="12" class="px-5">
         <div>Barangay</div>
         <div>
-          <v-select outlined v-model="events.barangay" :items="barangay_list"></v-select>
+          <v-select outlined item-text="name" item-value="name" v-model="events.barangay" :items="barangay"></v-select>
         </div>
       </v-col>
       </v-row>
@@ -146,12 +152,40 @@ export default {
     return {
       room_list:['Standard','Deluxe','Suite'],
       events: [],
-      barangay_list:['Barangay 1','Barangay 2','Barangay 3','Barangay 4','Barangay 5','Barangay 6','Barangay 7','Bagong Kalsada','Banadero','Banlic','Barandal','Batino'],
       buttonLoad: false,
+      barangay:[],
       img_holder:'image_placeholder.png'
     };
   },
+  created(){
+    this.eventsGetall()
+  },
   methods: {
+    async eventsGetall() {
+      const res = await this.$axios
+        .get(`/barangay/`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.barangay = res.data;
+        });
+    },
+     timestamp() {
+      var today = new Date();
+      var date =
+        today.getFullYear() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getDate();
+      var time = today.getHours() + ":" + today.getMinutes();
+      var dateTime = date
+
+      return dateTime;
+    },
     async addEvents() {
       this.buttonLoad = true;
       try {
@@ -159,10 +193,12 @@ export default {
         if (this.image != null && this.image != "") {
           form_data.append("image", this.image);
         }
-        form_data.append("fullname", this.events.fullname);
+        form_data.append("firstname", this.events.firstname);
+        form_data.append("lastname", this.events.lastname);
         form_data.append("gender", this.events.gender);
         form_data.append("address", this.events.address);
         form_data.append("occupation", this.events.occupation);
+        form_data.append("date_start", this.timestamp());
         form_data.append("monthly_salary",this.events.monthly_salary );
         form_data.append("type_of_id", this.events.type_of_id);
         form_data.append("id_number", this.events.id_number);

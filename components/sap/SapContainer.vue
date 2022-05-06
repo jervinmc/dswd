@@ -50,7 +50,7 @@
         <b>SAP Management</b>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff'">
+      <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff' && is_show_request">
         <v-btn
           class="rnd-btn"   
           rounded
@@ -147,13 +147,15 @@ export default {
         events:[],
       selectedItem:{},
       isLoading: false,
+      is_show_request:false,
       users: [],
       dialogAdd:false,
       isCategory:false,
       isAdd:true,
       headers: [
         { text: "ID", value: "id" },
-        { text: "Fullname", value: "fullname" },
+        { text: "Firstname", value: "firstname" },
+        { text: "Lastname", value: "lastname" },
         { text: "Gender", value: "gender" },
         { text: "Address", value: "address" },
         { text: "Occupation", value: "occupation" },
@@ -164,6 +166,14 @@ export default {
     };
   },
   methods: {
+  async  check4ps(){
+    this.$axios.get(`/check4ps/${localStorage.getItem('id')}/`,{headers:{
+          Authorization:`Bearer ${localStorage.getItem('token')}`
+        }})
+        .then((res)=>{
+          this.is_show_request = res.data
+        })
+    },
      editItem(){
         this.buttonLoad=true
       this.$axios.patch(`/cases/${this.users.id}/`,{
@@ -299,6 +309,7 @@ export default {
         });
     },
     loadData() {
+      this.check4ps()
       this.account_type=localStorage.getItem('account_type')
       this.eventsGetall();
     },

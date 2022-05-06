@@ -21,8 +21,44 @@
     <beneficiaries-add :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd" />
     <v-row>
       <v-col align="start" class="pa-10 text-h5" cols="auto">
-        <b>Donation Management</b>
+        <b>Request Management</b>
       </v-col>
+       <v-row>
+        <v-col align-self="center" class="pa-10 ">
+        <v-text-field placeholder="search" outlined v-model="search"></v-text-field>
+      </v-col>
+       <v-col class="pa-10 ">
+          <v-menu
+          class="pa-0"
+          ref="eventDate"
+          v-model="eventDate"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          max-width="290px"
+          min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+            hide-details=""
+              v-model="date"
+              outlined
+              label="Date"
+              persistent-hint
+              v-bind="attrs"
+              @blur="date = date"
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            @change="changeDate"
+            v-model="date"
+            no-title
+            range
+          ></v-date-picker>
+        </v-menu>
+       </v-col>
+     </v-row>
       <v-spacer></v-spacer>
       <!-- <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff'">
         <v-btn
@@ -41,8 +77,9 @@
     </v-row>
     <v-data-table
       class="pa-5"
+      :search="search"
       :headers="headers"
-      :items="events"
+      :items="items_all"
       :loading="isLoading"
     >
      <template v-slot:[`item.status`]="{ item }">
@@ -76,21 +113,12 @@
             </v-btn>
           </template>
           <v-list dense>
-            <v-list-item @click.stop="status(item,'activate')">
+            <v-list-item @click.stop="route(item)">
               <v-list-item-content>
-                <v-list-item-title>Approve</v-list-item-title>
+                <v-list-item-title>View</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item @click.stop="status(item,'deactivate')">
-              <v-list-item-content>
-                <v-list-item-title>Disapprove</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item @click.stop="setCategory(item)">
-              <v-list-item-content>
-                <v-list-item-title>Set Category</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
+          
           </v-list>
         </v-menu>
       </template>
@@ -110,6 +138,8 @@ export default {
   },
   data() {
     return {
+      items_all:[],
+date:[],
       buttonLoad:false,
       account_type:'',
       deleteConfirmation:false,
@@ -120,19 +150,41 @@ export default {
       users: [],
       dialogAdd:false,
       isAdd:true,
+      search:'',
       headers: [
         { text: "ID", value: "id" },
         { text: "Firstname", value: "firstname" },
         { text: "Lastname", value: "lastname" },
-        { text: "Status", value: "status" },
-        { text: "Category", value: "category" },
-        { text: "Image", value: "image" },
+        { text: "Date", value: "date_start" },
+        { text: "Request Type", value: "request_type" },
+        
         { text: "Actions", value: "opt" },
         ,
       ],
     };
   },
   methods: {
+    changeDate(){
+          this.items_all = []
+           for(let key in this.events){
+          if(new Date(this.date[0])<=new Date(this.events[key].date_start) && new Date(this.date[1])>=new Date(this.events[key].date_start)){
+             this.items_all.push(this.events[key])
+          }
+        } 
+      },
+      route(item){
+          if(item.request_type=='sap'){
+               window.location.href=`sap?id=${item.id}`
+          }
+          else if(item.request_type=='4ps'){
+               window.location.href=`4ps?id=${item.id}`
+          }
+          else{
+               window.location.href=`beneficiaries?id=${item.id}`
+          
+          }
+         
+      },
        status(item,status){
     this.buttonLoad=true
       this.$axios.patch(`/donate/${item.id}/`,{
@@ -217,7 +269,7 @@ export default {
     async eventsGetall() {
       this.isLoading = true;
       const res = await this.$axios
-        .get(`/donate/`, {
+        .get(`/requests/`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -225,6 +277,7 @@ export default {
         .then((res) => {
           console.log(res.data);
           this.events = res.data;
+          this.items_all = res.data;
           this.isLoading = false;
         });
     },

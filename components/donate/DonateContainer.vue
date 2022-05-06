@@ -117,7 +117,7 @@ export default {
         { text: "ID", value: "id" },
         { text: "Firstname", value: "firstname" },
         { text: "Lastname", value: "lastname" },
-        { text: "Occupation", value: "occupation" },
+        { text: "Category", value: "category" },
         { text: "Status", value: "status" },
         ,
       ],

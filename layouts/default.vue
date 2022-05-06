@@ -239,12 +239,17 @@ export default {
         // },
         { 
           icon: "mdi-cog",
-          title: "Admin/Users",
+          title: "Usermanagement",
           to: "/admin/usermanagement",
+        },
+        { 
+          icon: "mdi-cog",
+          title: "Requests",
+          to: "/admin/requests",
         },
         {
           icon: "mdi-account-group",
-          title: "Donate",
+          title: "Donation",
           to: "/admin/donate",
         },
         {
