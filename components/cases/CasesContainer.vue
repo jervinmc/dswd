@@ -105,7 +105,7 @@
           <v-col cols="4">
             <div>Contact Number</div>
             <div>
-              <v-select outlined v-model="users.contact_number" :items="['In-School','OSY']" ></v-select>
+              <v-text-field outlined v-model="users.contact_number" ></v-text-field>
             </div>
           </v-col>
           <v-col cols="4">
@@ -311,6 +311,8 @@ export default {
             // this.$refs.form.reset()
             this.isRegistered = true
             this.isLoaded = false
+            alert("Successfully Sent!")
+            this.users=[]
           })
       } catch {
         this.isLoaded = false

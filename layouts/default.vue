@@ -63,13 +63,15 @@
       <v-col cols="auto">
         <v-img src="/calamba_logo.png" height="60" width="60" contain style="cursor:pointer" @click="route('index')"></v-img>
       </v-col>
-      <v-col cols="auto">
-              <v-img src="/main_logo.png" height="60" width="60" contain style="cursor:pointer" @click="route('index')"></v-img>
-      </v-col>
       <v-col  align-self="center">
         <div class="white--text">
         DSWD ADMIN
       </div>
+      </v-col>
+      <v-col  cols="6">
+            <div align="center">
+                <v-img src="/main_logo.png" height="60" width="60" contain style="cursor:pointer" @click="route('index')"></v-img>
+            </div>
       </v-col>
     </v-row>
     <div class="white--text">

@@ -39,6 +39,12 @@
           <v-text-field :items="selection" outlined v-model="events.location"></v-text-field>
         </div>
       </v-col>
+       <v-col cols="12" class="px-5">
+        <div>Mode of Payment</div>
+        <div>
+          <v-select :items="['Cash','Bank Transfer']"  outlined v-model="events.mop"></v-select>
+        </div>
+      </v-col>
        <!-- <v-col>
         <span class="pt-2 pr-10 pb-10"><b>Upload Image<v-icon @click="$refs.file.click()">mdi-plus</v-icon></b></span>
 
@@ -97,7 +103,15 @@ export default {
   data() {
     return {
       room_list:['Standard','Deluxe','Suite'],
-      events: [],
+      events:{
+        "lastname":"",
+        "middlename":"",
+        "firstname":"",
+        "occupation":"",
+        "mop":"",
+        "beneficiaries_type":"",
+        "location":""
+      },
       buttonLoad: false,
       img_holder:'image_placeholder.png'
     };
@@ -127,6 +141,7 @@ export default {
         form_data.append("middlename", this.events.middlename);
         form_data.append("firstname", this.events.firstname);
         form_data.append("occupation", this.events.occupation);
+        form_data.append("mop", this.events.mop);
         form_data.append("beneficiaries_type", this.events.beneficiaries_type);
         form_data.append("status", "Pending");
         form_data.append("date_start", this.timestamp());

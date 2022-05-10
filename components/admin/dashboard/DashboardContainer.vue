@@ -37,7 +37,7 @@
                 </div>
             </v-card>
          </v-col>
-          <v-col align="center" @click="route('donate')" >
+          <v-col align="center" @click="route('4ps')" >
                <v-card height="170" width="170" elevation="5" align="center" style="cursor:pointer">
                 <v-icon size="60">mdi-text-box-search-outline</v-icon>
                 <div class="text-h6">
@@ -59,7 +59,7 @@
                 </div>
             </v-card>
          </v-col> -->
-          <v-col align="center" @click="route('donate')" >
+          <v-col align="center" @click="route('sap')" >
                <v-card height="170" width="170" elevation="5" align="center" style="cursor:pointer">
                 <v-icon size="60">mdi-text-box-search-outline</v-icon>
                 <div class="text-h6">
@@ -114,7 +114,7 @@ export default {
     },
     data(){
         return{
-        
+        chart_data1:[],
         donation:[],
         ps_list:[],
         chartData1: {
@@ -266,7 +266,7 @@ export default {
         .then((res) => {
           console.log(res.data);
           this.search_list = res.data;
-          this.search_list = this.search_list.filter(data=>data.status=='approved')
+          this.search_list = this.search_list.filter(data=>data.status=='Approved')
           console.log('okay')
           console.log(this.search_list)
           // this.search_list.map(item=>{

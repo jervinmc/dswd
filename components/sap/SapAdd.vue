@@ -91,8 +91,13 @@
           <v-select outlined item-text="name" item-value="name" v-model="events.barangay" :items="barangay"></v-select>
         </div>
       </v-col>
+      <v-col cols="12" class="px-5">
+        <div>Mode of Payment</div>
+        <div>
+          <v-select :items="['Cash','Bank Transfer']"  outlined v-model="events.mop"></v-select>
+        </div>
+      </v-col>
       </v-row>
-
        <v-col>
         <span class="pt-2 pr-10 pb-10"><b>Upload Image<v-icon @click="$refs.file.click()">mdi-plus</v-icon></b></span>
 
@@ -151,7 +156,26 @@ export default {
   data() {
     return {
       room_list:['Standard','Deluxe','Suite'],
-      events: [],
+      events:{
+        firstname:"",
+        lastname:'',
+        gender:'',
+        address:'',
+        occupation:'',
+        monthly_salary:'',
+        type_of_id:'',
+        id_number:'',
+        cellphone:'',
+        workplace:'',
+        sector:'',
+        barangay:'',
+        mop:'',
+        health_condition:'',
+        family_member:''
+
+
+
+      },
       buttonLoad: false,
       barangay:[],
       img_holder:'image_placeholder.png'
@@ -207,6 +231,7 @@ export default {
         form_data.append("user_id",localStorage.getItem('id') );
         form_data.append("sector", this.events.sector);
         form_data.append("barangay", this.events.barangay);
+        form_data.append("mop", this.events.mop);
         form_data.append("health_condition", this.events.health_condition);
         form_data.append("family_member", this.events.family_member);
 
@@ -226,7 +251,7 @@ export default {
             });
         } else {
           const response = await this.$axios
-            .patch(`/beneficiaries/${this.events.id}/`, form_data, {
+            .patch(`/sap/${this.events.id}/`, form_data, {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
               },

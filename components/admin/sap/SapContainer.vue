@@ -20,12 +20,58 @@
   </v-dialog>
   <v-dialog v-model="viewDetails" width="1000" persistent>
     <v-card class="pa-10">
-        <v-data-table :items="sap_items" :headers="sap_headers" >
+      <v-row>
+         <v-col align-self="center" class="pa-10 ">
+        <v-text-field placeholder="search" outlined v-model="search_sap"></v-text-field>
+      </v-col>
+       <v-col>
+             Download Sap Form
+              <JsonExcel :data="sap_items" name="sap.xls">
+                <v-btn>Download</v-btn>
+              </JsonExcel>
+           </v-col>
+      </v-row>
+        <v-data-table 
+        :search="search_sap"
+        :loading="loadingSap"
+        @click:row="viewSapFormDetail"
+        :items="sap_items" :headers="sap_headers" >
             <template #[`item.image`]="{ item }">
         <v-img :src="item.image" height="100" width="100"></v-img>
       </template>
+        <!-- <template #[`item.opt`]="{ item }">
+        <v-menu offset-y z-index="1">
+          <template v-slot:activator="{ attrs, on }">
+            <v-btn icon v-bind="attrs" v-on="on">
+              <v-icon>mdi-dots-horizontal</v-icon>
+            </v-btn>
+          </template>
+          <v-list dense>
+            <v-list-item @click.stop="viewSapFormDetail(item)">
+              <v-list-item-content>
+                <v-list-item-title>View</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </template> -->
         </v-data-table>
-
+              <template #[`item.opt`]="{ item }">
+        <v-menu offset-y z-index="1">
+          <template v-slot:activator="{ attrs, on }">
+            <v-btn icon v-bind="attrs" v-on="on">
+              <v-icon>mdi-dots-horizontal</v-icon>
+            </v-btn>
+          </template>
+          <v-list dense>
+            <v-list-item @click.stop="viewSapForm(item)">
+              <v-list-item-content>
+                <v-list-item-title>View</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </template>
             <v-card-actions>
         <v-row align="center">
             <v-col align="end">
@@ -38,27 +84,7 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-  <v-dialog v-model="isCategory" width="500" persistent>
-    <v-card class="pa-10">
-    <div align="center" class="text-h6">Category</div>
-    <div align="center" class="pa-10">
-        Please select category.
-    </div>
-    <div>
-        <v-select outlined :items="['Category1','Category2','Category3']"  v-model="category" ></v-select>
-    </div>
-      <v-card-actions>
-        <v-row align="center">
-            <v-col align="end">
-                <v-btn color="red" text @click="isCategory=false"> Cancel </v-btn>
-            </v-col>
-            <v-col>
-                <v-btn color="success" text :loading="buttonLoad" @click="submitCategory"> Confirm </v-btn>
-            </v-col>
-        </v-row>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+
     <sap-add :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd" />
     <v-row>
       <v-col align="start" class="pa-10 text-h5" cols="auto">
@@ -123,21 +149,6 @@
                 <v-list-item-title>View</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <!-- <v-list-item @click.stop="approve(item)">
-              <v-list-item-content>
-                <v-list-item-title>Approve</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item @click.stop="deleteItem(item)">
-              <v-list-item-content>
-                <v-list-item-title>Disapprove</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item @click.stop="setCategory(item)">
-              <v-list-item-content>
-                <v-list-item-title>Set Category</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item> -->
           </v-list>
         </v-menu>
       </template>
@@ -147,13 +158,14 @@
 
 <script>
 
-
+import JsonExcel from 'vue-json-excel'
 export default {
   created() {
     this.loadData();
   },
   data() {
     return {
+      search_sap:'',
       search:'',
       viewDetails:false,
     category:'',
@@ -169,6 +181,7 @@ export default {
       dialogAdd:false,
       isCategory:false,
       isAdd:true,
+      loadingSap:false,
       headers: [
         { text: "ID", value: "id" },
         { text: "Barangay Name", value: "name" },
@@ -184,10 +197,19 @@ export default {
         { text: "Occupation", value: "occupation" },
         { text: "Monthly Salary", value: "monthly_salary" },
          { text: "Image", value: "image" },
+         { text: "Action", value: "opt" },
       ],
     };
   },
+components:{
+   JsonExcel 
+},  
   methods: {
+    viewSapFormDetail(item){
+      this.isAdd=false
+      this.dialogAdd=true
+      this.selectedItem=item
+    },
      editItem(){
         this.buttonLoad=true
       this.$axios.patch(`/cases/${this.users.id}/`,{
@@ -216,8 +238,8 @@ export default {
           this.loadData()
       })
       },
-    view(item){
-      this.users=item 
+      viewSapForm(item){
+         this.sap_data=item 
       this.viewDetails=true
       this.$axios.post('/barangaysap/',{barangay:item.name},{
         headers:{
@@ -226,6 +248,22 @@ export default {
       })
       .then((res)=>{
         console.log(res)
+        this.sap_items=res.data
+      })
+      },
+    view(item){
+      this.sap_items=[]
+      this.users=item 
+      this.loadingSap=true
+      this.viewDetails=true
+      this.$axios.post('/barangaysap/',{barangay:item.name},{
+        headers:{
+          Authorization:`Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      .then((res)=>{
+        console.log(res)
+        this.loadingSap=false
         this.sap_items=res.data
       })
 
@@ -333,6 +371,9 @@ export default {
         });
     },
     loadData() {
+      this.sap_items=[]
+      this.viewDetails=false
+      this.dialogAdd=false
       this.account_type=localStorage.getItem('account_type')
       this.eventsGetall();
     },
