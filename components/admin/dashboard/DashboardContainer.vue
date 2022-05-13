@@ -70,6 +70,17 @@
                 </div>
             </v-card>
          </v-col>
+         <v-col align="center" @click="route('request')" >
+               <v-card height="170" width="170" elevation="5" align="center" style="cursor:pointer">
+                <v-icon size="60">mdi-text-box-search-outline</v-icon>
+                <div class="text-h6">
+                   <b>Request</b>
+                </div>
+                <div class="text-h3 green--text pt-5">
+                    <b>{{request_list.length}}</b>
+                </div>
+            </v-card>
+         </v-col>
      </v-row>
      <div class="py-10" align="start">
        <v-card elevation="5">
@@ -114,6 +125,7 @@ export default {
     },
     data(){
         return{
+          request_list:[],
         chart_data1:[],
         donation:[],
         ps_list:[],
@@ -158,6 +170,21 @@ export default {
         }
     },
     methods:{
+       async requestGetall() {
+      this.isLoading = true;
+      const res = await this.$axios
+        .get(`/requests/`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.request_list = res.data;
+          this.request_list = res.data;
+          this.isLoading = false;
+        });
+    },
      async psGetall(){
           const res = await this.$axios
         .get(`/ps/`, {
@@ -208,6 +235,7 @@ export default {
                 this.usersGetall()
                 this.psGetall()
                 this.sapGetall()
+                this.requestGetall()
         },
        async usersGetall(){
             const res = await this.$axios

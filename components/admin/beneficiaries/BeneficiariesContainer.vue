@@ -27,7 +27,7 @@
         <v-col align-self="center" class="pa-10 ">
         <v-text-field placeholder="search" outlined v-model="search"></v-text-field>
       </v-col>
-       <v-col class="pa-10 ">
+       <!-- <v-col class="pa-10 ">
           <v-menu
           class="pa-0"
           ref="eventDate"
@@ -57,7 +57,7 @@
             range
           ></v-date-picker>
         </v-menu>
-       </v-col>
+       </v-col> -->
      </v-row>
       <!-- <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff'">
         <v-btn

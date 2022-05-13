@@ -26,7 +26,7 @@
       </v-col>
        <v-col>
              Download Sap Form
-              <JsonExcel :data="sap_items" name="sap.xls">
+              <JsonExcel :data="items_download" name="sap.xls">
                 <v-btn>Download</v-btn>
               </JsonExcel>
            </v-col>
@@ -39,22 +39,16 @@
             <template #[`item.image`]="{ item }">
         <v-img :src="item.image" height="100" width="100"></v-img>
       </template>
-        <!-- <template #[`item.opt`]="{ item }">
-        <v-menu offset-y z-index="1">
-          <template v-slot:activator="{ attrs, on }">
-            <v-btn icon v-bind="attrs" v-on="on">
-              <v-icon>mdi-dots-horizontal</v-icon>
-            </v-btn>
-          </template>
-          <v-list dense>
-            <v-list-item @click.stop="viewSapFormDetail(item)">
-              <v-list-item-content>
-                <v-list-item-title>View</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </template> -->
+        <template #[`item.opt`]="{ item }">
+            <v-row>
+              <v-col>
+                <v-btn @click="status(item,'Approved')">Approve</v-btn>
+              </v-col>
+              <v-col>
+                <v-btn @click="status(item,'Disapproved')">Disapprove</v-btn>
+              </v-col>
+            </v-row>
+      </template>
         </v-data-table>
               <template #[`item.opt`]="{ item }">
         <v-menu offset-y z-index="1">
@@ -196,16 +190,34 @@ export default {
         { text: "Address", value: "address" },
         { text: "Occupation", value: "occupation" },
         { text: "Monthly Salary", value: "monthly_salary" },
-         { text: "Image", value: "image" },
+        //  { text: "Image", value: "image" },
+          { text: "Status", value: "status" },
          { text: "Action", value: "opt" },
       ],
     };
   },
+ computed:{
+     items_download(){
+      return this.events.filter(item=>{
+        return item.status!='Approved'
+      })}
+     },
 components:{
    JsonExcel 
 },  
   methods: {
+    async check4ps(id){
+    this.$axios.get(`/check4ps/${id}/`,{headers:{
+          Authorization:`Bearer ${localStorage.getItem('token')}`
+        }})
+        .then((res)=>{
+          if(res.data){
+            alert("NOTE: this user is already has 4ps benefits")
+          }
+        })
+    },
     viewSapFormDetail(item){
+      this.check4ps(item.user_id)
       this.isAdd=false
       this.dialogAdd=true
       this.selectedItem=item
@@ -356,9 +368,9 @@ components:{
       this.isLoading = true;
       const res = await this.$axios
         .patch(
-          `/announcement/${data.id}/`,
+          `/sap/${data.id}/`,
           {
-            is_active: status == "Deactivate" ? false : true,
+            status: status,
           },
           {
             headers: {
@@ -368,6 +380,7 @@ components:{
         )
         .then((res) => {
           this.loadData();
+
         });
     },
     loadData() {

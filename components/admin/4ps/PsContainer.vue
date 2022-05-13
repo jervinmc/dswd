@@ -27,7 +27,7 @@
         <v-col align-self="center" class="pa-10 ">
         <v-text-field placeholder="search" outlined v-model="search"></v-text-field>
       </v-col>
-       <v-col class="pa-10 ">
+       <!-- <v-col class="pa-10 ">
           <v-menu
           class="pa-0"
           ref="eventDate"
@@ -57,7 +57,7 @@
             range
           ></v-date-picker>
         </v-menu>
-       </v-col>
+       </v-col> -->
      </v-row>
       <!-- <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff'">
         <v-btn
@@ -177,6 +177,16 @@ date:[],
     };
   },
   methods: {
+    async  checkSAP(id){
+    this.$axios.get(`/checkSAP/${id}/`,{headers:{
+          Authorization:`Bearer ${localStorage.getItem('token')}`
+        }})
+        .then((res)=>{
+          if(res.data){
+            alert("NOTE: This user has sap benefits")
+          }
+        })
+    },
     changeDate(){
           this.items_all = []
            for(let key in this.events){
@@ -186,6 +196,7 @@ date:[],
         } 
       },
     viewItem(item,s){
+      this.checkSAP(item.user_id)
       this.isAdd=false
       this.selectedItem = item
       this.dialogAdd=true

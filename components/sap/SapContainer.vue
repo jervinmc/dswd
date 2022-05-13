@@ -105,7 +105,7 @@
                 <v-list-item-title>View</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item @click.stop="approve(item)">
+            <!-- <v-list-item @click.stop="approve(item)">
               <v-list-item-content>
                 <v-list-item-title>Approve</v-list-item-title>
               </v-list-item-content>
@@ -119,7 +119,7 @@
               <v-list-item-content>
                 <v-list-item-title>Set Category</v-list-item-title>
               </v-list-item-content>
-            </v-list-item>
+            </v-list-item> -->
           </v-list>
         </v-menu>
       </template>

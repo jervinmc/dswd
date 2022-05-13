@@ -148,7 +148,7 @@ export default {
             });
         } else {
           const response = await this.$axios
-            .patch(`/beneficiaries/${this.events.id}/`, form_data, {
+            .patch(`/ps/${this.events.id}/`, form_data, {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
               },
