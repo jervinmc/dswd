@@ -122,6 +122,21 @@
           @change="onFileUpload"
         />
       </v-col>
+      <v-row v-if="$route.name=='admin-requests'">
+        <v-col align="end">
+              <v-btn color="red" :loading="isLoading" text @click="status('Disapproved')"> Disapprove </v-btn>
+        </v-col>
+        <v-col>
+           <v-btn
+              color="success"
+              text
+              @click="status('Approved')"
+              :loading="isLoading"
+            >
+              Approve
+            </v-btn>
+        </v-col>
+      </v-row>
       <v-card-actions>
         <v-row align="center">
           <v-col align="end">
@@ -185,6 +200,25 @@ export default {
     this.eventsGetall()
   },
   methods: {
+     async status(status) {
+      this.isLoading = true;
+      const res = await this.$axios
+        .patch(
+          `/sap/${this.events.id}/`,
+          {
+            status: status ,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((res) => {
+          this.$emit('refresh')
+      
+        });
+    },
     async eventsGetall() {
       const res = await this.$axios
         .get(`/barangay/`, {
@@ -228,7 +262,7 @@ export default {
         form_data.append("id_number", this.events.id_number);
         form_data.append("cellphone", this.events.cellphone);
         form_data.append("workplace", this.events.workplace);
-  
+
         form_data.append("sector", this.events.sector);
         form_data.append("barangay", this.events.barangay);
         form_data.append("mop", this.events.mop);
@@ -236,6 +270,7 @@ export default {
         form_data.append("family_member", this.events.family_member);
 
         if (this.isAdd) {
+          form_data.append("status", "Pending");
                 form_data.append("user_id",localStorage.getItem('id') );
           const response = await this.$axios
             .post("/sap/", form_data, {

@@ -202,7 +202,7 @@ export default {
   },
  computed:{
      items_download(){
-      return this.events.filter(item=>{
+      return this.sap_items.filter(item=>{
         return item.status!='Approved'
       })}
      },

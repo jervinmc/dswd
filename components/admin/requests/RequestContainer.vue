@@ -1,5 +1,6 @@
 <template>
   <v-card elevation="5">
+    <sap-add :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd" />
      <v-dialog v-model="deleteConfirmation" width="500" persistent>
     <v-card class="pa-10">
     <div align="center" class="text-h6">Confirmation</div>
@@ -18,7 +19,7 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-    <beneficiaries-add :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd" />
+    <!-- <beneficiaries-add :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd" /> -->
     <v-row>
       <v-col align="start" class="pa-10 text-h5" cols="auto">
         <b>Request Management</b>
@@ -127,9 +128,11 @@
 </template>
 
 <script>
+import SapAdd from '../../sap/SapAdd.vue';
 // import BeneficiariesAdd from './BeneficiariesAdd.vue';
 
 export default {
+  components: { SapAdd },
     // components:{
     //     BeneficiariesAdd
     // },
@@ -152,7 +155,7 @@ date:[],
       isAdd:true,
       search:'',
       headers: [
-        { text: "ID", value: "id" },
+        // { text: "ID", value: "id" },
         { text: "Firstname", value: "firstname" },
         { text: "Lastname", value: "lastname" },
         { text: "Date", value: "date_start" },
@@ -164,6 +167,17 @@ date:[],
     };
   },
   methods: {
+     async check4ps(id){
+    this.$axios.get(`/check4ps/${id}/`,{headers:{
+      
+          Authorization:`Bearer ${localStorage.getItem('token')}`
+        }})
+        .then((res)=>{
+          if(res.data){
+            alert("NOTE: this user is already has 4ps benefits")
+          }
+        })
+    },
     changeDate(){
           this.items_all = []
            for(let key in this.events){
@@ -174,7 +188,11 @@ date:[],
       },
       route(item){
           if(item.request_type=='sap'){
-               window.location.href=`sap?id=${item.id}`
+            this.check4ps(item.user_id)
+              this.isAdd=false
+              this.dialogAdd=true
+              this.selectedItem=item
+              //  window.location.href=`sap?id=${item.id}`
           }
           else if(item.request_type=='4ps'){
                window.location.href=`4ps?id=${item.id}`
@@ -264,6 +282,7 @@ date:[],
     // },
     loadData() {
       this.account_type=localStorage.getItem('account_type')
+      this.dialogAdd = false
       this.eventsGetall();
     },
     async eventsGetall() {

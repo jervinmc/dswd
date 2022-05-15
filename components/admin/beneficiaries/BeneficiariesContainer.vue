@@ -125,11 +125,11 @@
                 <v-list-item-title>Disapprove</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item @click.stop="setCategory(item)">
+            <!-- <v-list-item @click.stop="setCategory(item)">
               <v-list-item-content>
                 <v-list-item-title>Set Category</v-list-item-title>
               </v-list-item-content>
-            </v-list-item>
+            </v-list-item> -->
           </v-list>
         </v-menu>
       </template>

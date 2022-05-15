@@ -113,11 +113,10 @@
 
 <script>
 import PieChart from "./PieChart.js";
-import JsonExcel from 'vue-json-excel'
 export default {
     components:{
         PieChart,
-        JsonExcel
+      
     },
     created(){
       this.donateGetall()
@@ -126,7 +125,7 @@ export default {
     data(){
         return{
           request_list:[],
-        chart_data1:[],
+        chart_data1:false,
         donation:[],
         ps_list:[],
         chartData1: {
@@ -138,7 +137,7 @@ export default {
           {
             label: "Data One",
             backgroundColor: ['#E3C790', '#344557'],
-            data: [1]
+            data: [0,0,0]
           }
         ]
       },

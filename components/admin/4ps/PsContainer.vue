@@ -18,7 +18,7 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-    <beneficiaries-add :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd" />
+    <!-- <beneficiaries-add :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd" /> -->
     <v-row>
       <v-col align="start" class="pa-10 text-h5" >
         <b>4PS Management</b>
