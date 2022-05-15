@@ -119,6 +119,7 @@ export default {
         { text: "Lastname", value: "lastname" },
         { text: "Category", value: "category" },
         { text: "Status", value: "status" },
+        { text: "Actions", value: "opt" },
         ,
       ],
     };

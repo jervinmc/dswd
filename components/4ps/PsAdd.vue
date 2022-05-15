@@ -128,11 +128,13 @@ export default {
         form_data.append("middlename", this.events.middlename);
         form_data.append("firstname", this.events.firstname);
         form_data.append("remarks", this.events.remarks);
-        form_data.append("status", "Pending");
+        
         form_data.append("mop", this.events.mop);
         form_data.append("date_start", this.timestamp());
         form_data.append("location", this.events.location);
         if (this.isAdd) {
+          form_data.append("status", "Pending");
+          form_data.append("user_id", localStorage.getItem('id'));
           const response = await this.$axios
             .post("/ps/", form_data, {
               headers: {

@@ -24,7 +24,7 @@
         <b>4PS Management</b>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff' && is_show_request">
+      <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff' && !is_show_request">
         <v-btn
           class="rnd-btn"
           rounded
@@ -118,6 +118,7 @@ export default {
         { text: "Firstname", value: "firstname" },
         { text: "Lastname", value: "lastname" },
         { text: "Status", value: "status" },
+        { text: "Actions", value: "opt" },
         ,
       ],
     };

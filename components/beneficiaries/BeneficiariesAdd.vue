@@ -30,7 +30,7 @@
       <v-col cols="12" class="px-0">
         <div>Beneficiaries Type</div>
         <div>
-          <v-select outlined :items="['Burial','Medical','Educational']" v-model="events.beneficiaries_type"></v-select>
+          <v-select outlined :items="['Burial Type','Medical Type','Educational Type']" v-model="events.beneficiaries_type"></v-select>
         </div>
       </v-col>
       <v-col cols="12" class="px-0">
@@ -45,7 +45,7 @@
           <v-select :items="['Cash','Bank Transfer']"  outlined v-model="events.mop"></v-select>
         </div>
       </v-col>
-       <!-- <v-col>
+       <v-col>
         <span class="pt-2 pr-10 pb-10"><b>Upload Image<v-icon @click="$refs.file.click()">mdi-plus</v-icon></b></span>
 
         <div class="hover_pointer pt-10">
@@ -59,16 +59,16 @@
           />
         </div>
       </v-col> -->
-      <!-- <v-col class="d-none">
-        <input
-          style="display: none"
-          type="file"
-          id="fileInput"
-          ref="file"
-          accept="image/png, image/jpeg"
-          @change="onFileUpload"
-        />
-      </v-col> -->
+      <v-col class="d-none">
+              <input
+                style="display: none"
+                type="file"
+                id="fileInput"
+                ref="file"
+                accept="image/png, image/jpeg"
+                @change="onFileUpload"
+              />
+            </v-col>
       <v-card-actions>
         <v-row align="center">
           <v-col align="end">
@@ -143,10 +143,13 @@ export default {
         form_data.append("occupation", this.events.occupation);
         form_data.append("mop", this.events.mop);
         form_data.append("beneficiaries_type", this.events.beneficiaries_type);
-        form_data.append("status", "Pending");
+       
+     
         form_data.append("date_start", this.timestamp());
         form_data.append("location", this.events.location);
         if (this.isAdd) {
+           form_data.append("status", "Pending");
+             form_data.append("user_id", localStorage.getItem('id'));
           const response = await this.$axios
             .post("/beneficiaries/", form_data, {
               headers: {

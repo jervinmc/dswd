@@ -116,16 +116,21 @@ export default {
         let form_data = new FormData();
         if (this.image != null && this.image != "") {
           form_data.append("image", this.image);
+    
         }
         form_data.append("lastname", this.events.lastname);
         form_data.append("middlename", this.events.middlename);
         form_data.append("firstname", this.events.firstname);
         form_data.append("remarks", this.events.remarks);
-        form_data.append("status", "Pending");
+        if(localStorage.getItem('account_type')!='Admin'){
+          form_data.append("user_id", localStorage.getItem('id'));
+        }
+       
         form_data.append("location", this.events.location);
         form_data.append("category", this.events.category);
         form_data.append("date_start", this.timestamp());
         if (this.isAdd) {
+           form_data.append("status", "Pending");
           const response = await this.$axios
             .post("/donate/", form_data, {
               headers: {
@@ -141,7 +146,7 @@ export default {
             });
         } else {
           const response = await this.$axios
-            .patch(`/beneficiaries/${this.events.id}/`, form_data, {
+            .patch(`/donate/${this.events.id}/`, form_data, {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
               },

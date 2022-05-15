@@ -25,7 +25,7 @@
         <v-text-field placeholder="search" outlined v-model="search_sap"></v-text-field>
       </v-col>
        <v-col>
-             Download Sap Form
+             Download Sap List
               <JsonExcel :data="items_download" name="sap.xls">
                 <v-btn>Download</v-btn>
               </JsonExcel>
@@ -34,19 +34,23 @@
         <v-data-table 
         :search="search_sap"
         :loading="loadingSap"
-        @click:row="viewSapFormDetail"
+  
         :items="sap_items" :headers="sap_headers" >
             <template #[`item.image`]="{ item }">
         <v-img :src="item.image" height="100" width="100"></v-img>
       </template>
         <template #[`item.opt`]="{ item }">
             <v-row>
+               <v-col>
+                <v-btn @click="viewSapFormDetail(item)">View</v-btn>
+              </v-col>
               <v-col>
                 <v-btn @click="status(item,'Approved')">Approve</v-btn>
               </v-col>
               <v-col>
                 <v-btn @click="status(item,'Disapproved')">Disapprove</v-btn>
               </v-col>
+            
             </v-row>
       </template>
         </v-data-table>
@@ -208,6 +212,7 @@ components:{
   methods: {
     async check4ps(id){
     this.$axios.get(`/check4ps/${id}/`,{headers:{
+      
           Authorization:`Bearer ${localStorage.getItem('token')}`
         }})
         .then((res)=>{

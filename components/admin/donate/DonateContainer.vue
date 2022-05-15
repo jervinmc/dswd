@@ -17,6 +17,7 @@
         </v-row>
       </v-card-actions>
     </v-card>
+    <donate-add :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd"  />
   </v-dialog>
     <beneficiaries-add :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd" />
     <v-row>
@@ -76,6 +77,11 @@
             </v-btn>
           </template>
           <v-list dense>
+             <v-list-item @click.stop="editItem(item)">
+              <v-list-item-content>
+                <v-list-item-title>Edit</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
             <v-list-item @click.stop="status(item,'activate')">
               <v-list-item-content>
                 <v-list-item-title>Approve</v-list-item-title>
@@ -86,11 +92,11 @@
                 <v-list-item-title>Disapprove</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item @click.stop="setCategory(item)">
+            <!-- <v-list-item @click.stop="setCategory(item)">
               <v-list-item-content>
                 <v-list-item-title>Set Category</v-list-item-title>
               </v-list-item-content>
-            </v-list-item>
+            </v-list-item> -->
           </v-list>
         </v-menu>
       </template>
@@ -133,6 +139,11 @@ export default {
     };
   },
   methods: {
+      editItem(val){
+      this.selectedItem=val
+      this.dialogAdd=true
+      this.isAdd=false
+    },
        status(item,status){
     this.buttonLoad=true
       this.$axios.patch(`/donate/${item.id}/`,{

@@ -16,14 +16,11 @@
       <v-col align-self="center" align="center">
         <div class="text-h3 py-5"><b>History</b></div>
         <div>
-          The business owner's first idea was turn to their land to an apartment
-          for the abs-cbn workers in the area. But then decided to transition to
-          resorts instead and because of that the first couple of rooms are
-          studio-type rooms. During the Pandemic the resorts are closed due to
-          the rise of Covid19 outbreak and this time of need the resorts are
-          allowed to invite frontliners in the resort especially those
-          frontliners that are in need of a place to stay. On the new normal the
-          resorts move on and continues it's services for the mass.
+          The Department of Social Welfare and Development (DSWD) warned the public against individuals posing as DSWD personnel who are conducting recruitment and enlistment activities for the Pantawid Pamilyang Pilipino Program (4Ps).
+
+The Department received a report that certain individuals wearing the DSWD red vest are allegedly asking non-4Ps members to provide their birth certificates with a promise to be included in the program. Likewise, these individuals are issuing school certifications to 4Ps beneficiaries to lure them into giving their cash card account numbers.
+
+The Department clarified that there is no ongoing registration of additional 4Ps beneficiaries. It also emphasized that only those households assessed as poor in the Listahanan database are qualified to be registered as 4Ps beneficiaries.
         </div>
       </v-col>
     </v-row>

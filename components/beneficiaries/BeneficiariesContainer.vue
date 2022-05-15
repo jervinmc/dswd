@@ -118,7 +118,9 @@ export default {
         { text: "Firstname", value: "firstname" },
         { text: "Lastname", value: "lastname" },
         { text: "Occupation", value: "occupation" },
+        { text: "Beneficiary Type", value: "beneficiaries_type" },
         { text: "Status", value: "status" },
+        { text: "Actions", value: "opt" },
         ,
       ],
     };

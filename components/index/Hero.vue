@@ -8,12 +8,7 @@
                 <b>DSWD</b>
               </div>
               <div class="my-10">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+               The Department clarified that there is no ongoing registration of additional 4Ps beneficiaries. It also emphasized that only those households assessed as poor in the Listahanan database are qualified to be registered as 4Ps beneficiaries.
               </div>
               <!-- <v-btn depressed color="#6609af" dark> Book now ! </v-btn> -->
             </v-col>

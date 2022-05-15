@@ -70,7 +70,7 @@
                 </div>
             </v-card>
          </v-col>
-         <v-col align="center" @click="route('request')" >
+         <v-col align="center" @click="route('requests')" >
                <v-card height="170" width="170" elevation="5" align="center" style="cursor:pointer">
                 <v-icon size="60">mdi-text-box-search-outline</v-icon>
                 <div class="text-h6">
@@ -92,7 +92,7 @@
                 </div>
        </v-card>
        </div>
-       <div>
+       <!-- <div>
          <v-row>
            <v-col>
              Download Donation List Report
@@ -107,7 +107,7 @@
               </JsonExcel>
            </v-col>
          </v-row>
-       </div>
+       </div> -->
   </div>
 </template>
 
@@ -259,7 +259,7 @@ export default {
                 })
                 .then((res) => {
                 console.log(res.data);
-                this.donation = res.data;
+                this.donation = res.data.filter(data=>data.status=='Approved');
                 
                 });
         },
@@ -292,8 +292,17 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res.data);
           this.search_list = res.data;
+            var women =  this.search_list.filter(item => item.case_category=='Women')
+          this.chartData1.datasets[0].data[0]=women.length
+       
+          var child =  this.search_list.filter(item => item.case_category=='Child')
+          this.chartData1.datasets[0].data[1]=child.length
+          var men =  this.search_list.filter(item => item.case_category=='Men')
+          this.chartData1.datasets[0].data[2]=men.length
+        
+          console.log(res.data);
+          
           this.search_list = this.search_list.filter(data=>data.status=='Approved')
           console.log('okay')
           console.log(this.search_list)
@@ -303,13 +312,7 @@ export default {
           //         this.chartData1.datasets[40].data[0]=1
               
           // })
-          var women =  this.search_list.filter(item => item.category=='Women')
-          this.chartData1.datasets[0].data[0]=women.length
-          var child =  this.search_list.filter(item => item.category=='Child')
-          this.chartData1.datasets[0].data[1]=child.length
-          var men =  this.search_list.filter(item => item.category=='Men')
-          this.chartData1.datasets[0].data[2]=men.length
-          this.chart_data1=true;
+            this.chart_data1=true;
         });
       }
     }

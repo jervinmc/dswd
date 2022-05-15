@@ -50,7 +50,7 @@
         <b>SAP Management</b>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff' && is_show_request">
+      <v-col align-self="center" align="end" class="pr-10" v-if="account_type!='Staff' && !is_show_request">
         <v-btn
           class="rnd-btn"   
           rounded
@@ -158,8 +158,7 @@ export default {
         { text: "Lastname", value: "lastname" },
         { text: "Gender", value: "gender" },
         { text: "Address", value: "address" },
-        { text: "Occupation", value: "occupation" },
-        { text: "Monthly Salary", value: "monthly_salary" },
+        { text: "Status", value: "status" },
         { text: "Action", value: "opt" },
         ,
       ],
@@ -203,8 +202,10 @@ export default {
       })
       },
     view(item){
-      this.selectedItem=item 
-      this.viewDetails=true
+       this.selectedItem=item 
+      this.dialogAdd = true
+      this.isAdd = false
+     
     },
       approve(item){
 
@@ -316,7 +317,7 @@ export default {
     async eventsGetall() {
       this.isLoading = true;
       const res = await this.$axios
-        .get(`/sap/`, {
+        .get(`/sap_id/id/`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

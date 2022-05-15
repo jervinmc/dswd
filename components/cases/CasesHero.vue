@@ -8,12 +8,7 @@
                 <b>DSWD Request Case</b>
               </div>
               <div class="my-10">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+               The Department of Social Welfare and Development (DSWD) warned the public against individuals posing as DSWD personnel who are conducting recruitment and enlistment activities for the Pantawid Pamilyang Pilipino Program (4Ps).
               </div>
               <!-- <v-btn depressed color="#6609af" dark> Book now ! </v-btn> -->
             </v-col>
