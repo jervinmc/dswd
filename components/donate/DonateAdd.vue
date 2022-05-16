@@ -2,7 +2,7 @@
 <v-form ref="form">
   <v-dialog v-model="isOpen" width="1000" persistent>
     <v-card class="pa-10">
-      <div align="center" class="text-h6">Request Beneficiaries</div>
+      <div align="center" class="text-h6">Request Donation</div>
       <v-col cols="12" class="px-0">
         <div>Lastname</div>
         <div>

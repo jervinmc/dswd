@@ -17,9 +17,10 @@
         </v-row>
       </v-card-actions>
     </v-card>
-    <donate-add :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd"  />
+
   </v-dialog>
-    <beneficiaries-add :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd" />
+    <donate-add  :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd"  />
+    <!-- <beneficiaries-add :isOpen="dialogAdd" @cancel="dialogAdd=false" @refresh="loadData" :items="selectedItem" :isAdd="isAdd" /> -->
     <v-row>
       <v-col align="start" class="pa-10 text-h5" cols="auto">
         <b>Donation Management</b>
@@ -105,12 +106,12 @@
 </template>
 
 <script>
-// import BeneficiariesAdd from './BeneficiariesAdd.vue';
+import DonateAdd from '../../donate/DonateAdd.vue';
 
 export default {
-    // components:{
-    //     BeneficiariesAdd
-    // },
+    components:{
+        DonateAdd
+    },
   created() {
     this.loadData();
   },
