@@ -117,6 +117,7 @@ export default {
   },
   data() {
     return {
+      isLoaded:true,
       buttonLoad:false,
       account_type:'',
       deleteConfirmation:false,
@@ -238,6 +239,16 @@ export default {
           console.log(res.data);
           this.events = res.data;
           this.isLoading = false;
+          if(this.isLoaded){
+            this.isLoaded=false
+               if(this.$route.query.id!=undefined){
+            for(let key in this.events){
+              if(this.events[key].id==this.$route.query.id){
+                this.editItem(this.events[key],'')
+              }
+            }
+          }
+          }
         });
     },
   },

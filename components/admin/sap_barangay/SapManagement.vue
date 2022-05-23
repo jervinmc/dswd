@@ -124,6 +124,7 @@ export default {
   },
   data() {
     return {
+      isLoaded:true,
     barangay:'',
       search:'',
     category:'',
@@ -292,6 +293,17 @@ export default {
         console.log(res)
         this.isLoading=false
         this.events=res.data
+        if(this.isLoaded){
+            this.isLoaded=false
+               if(this.$route.query.id!=undefined){
+            for(let key in this.events){
+              if(this.events[key].id==this.$route.query.id){
+               
+                this.editItem(this.events[key],'')
+              }
+            }
+          }
+          }
       })
     },
   },

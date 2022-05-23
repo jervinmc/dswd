@@ -1,5 +1,21 @@
 <template>
 <v-form ref="form">
+   <v-overlay
+            :absolute="true"
+            :value="fullscreenImage"
+          >  
+           <v-card height="700">
+                <v-img :src="image_view"  width="800">
+                  <div align="end" class="pa-10"> 
+            <div class="pt-16">
+                <v-icon @click="cancelImage" color="red" size="40">
+                mdi-close
+              </v-icon>
+            </div>
+            </div>
+              </v-img>
+           </v-card>
+       </v-overlay>
   <v-dialog v-model="isOpen" width="1000" persistent>
     <v-card class="pa-10">
        <div>
@@ -65,7 +81,7 @@
 
         <div class="hover_pointer pt-10">
           <img
-            @click="$refs.file.click()"
+           @click="viewImage(img_holder)"
             :src="img_holder"
             alt="item_.js"
             height="150"
@@ -91,7 +107,7 @@
 
         <div class="hover_pointer pt-10">
           <img
-            @click="$refs.file2.click()"
+            @click="viewImage(img_holder2)"
             :src="img_holder2"
             alt="item_.js"
             height="150"
@@ -117,7 +133,7 @@
 
         <div class="hover_pointer pt-10">
           <img
-            @click="$refs.file3.click()"
+             @click="viewImage(img_holder3)"
             :src="img_holder3"
             alt="item_.js"
             height="150"
@@ -173,6 +189,7 @@ export default {
   },
   data() {
     return {
+      fullscreenImage:false,
       image2:'',
       image3:'',
       img_holder2:'',
@@ -192,6 +209,15 @@ export default {
     };
   },
   methods: {
+     cancelImage(){
+      this.isOpen=true
+      this.fullscreenImage=false
+    },
+    viewImage(image){
+      this.image_view = image
+      this.fullscreenImage = true
+      this.isOpen=false
+    },
      timestamp() {
       var today = new Date();
       var date =

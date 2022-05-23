@@ -197,6 +197,12 @@ date:[],
           else if(item.request_type=='4ps'){
                window.location.href=`4ps?id=${item.id}`
           }
+          else if(item.request_type=='cases'){
+               window.location.href=`cases?id=${item.id}`
+          }
+          else if(item.request_type=='donation'){
+               window.location.href=`donate?id=${item.id}`
+          }
           else{
                window.location.href=`beneficiaries?id=${item.id}`
           

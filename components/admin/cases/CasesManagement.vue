@@ -195,7 +195,7 @@
                   </v-col>
               </v-row>
             </div>
-               <div class="text-h6">Case Category(Child)</div>
+               <div class="text-h6">Case Category</div>
                     <div  v-if="users.case_category=='Child'" >
                      <v-row>
                        <v-col cols="3">
@@ -523,6 +523,11 @@
                           v-model="selected_referral"
                           label="Legal Assistance: Affidavit, Bail Processing, ROR"
                           value="Legal Assistance: Affidavit, Bail Processing, ROR"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_referral"
+                          label="PNP/WCPD(Inquiry,Blotter,Case Filing)"
+                          value="PNP/WCPD(Inquiry,Blotter,Case Filing)"
                         ></v-checkbox>
                         <v-checkbox
                           v-model="selected_referral"
@@ -1032,7 +1037,7 @@ export default {
   },
   data() {
     return {
-
+      isLoaded:true,
       items_all:[],
       date:[],
       search:'',
@@ -1113,7 +1118,9 @@ export default {
      editItem(){
         this.buttonLoad=true
          var status = 'Pending'
-        if(this.users.intervention!='' && this.users.intervention!=undefined){
+         console.log(this.selected_intervention.length)
+         console.log("y")
+        if(this.selected_intervention.length>0){
           status = 'Approved'
         }
       this.$axios.post(`/casecategory-bulk/`,{cases:this.selected_case,referral:this.selected_referral,intervention:this.selected_intervention,case_id:this.users.id},{
@@ -1303,6 +1310,16 @@ export default {
           this.events = res.data;
           this.items_all = res.data;
           this.isLoading = false;
+          if(this.isLoaded){
+            this.isLoaded=false
+               if(this.$route.query.id!=undefined){
+            for(let key in this.events){
+              if(this.events[key].id==this.$route.query.id){
+                this.view(this.events[key],'')
+              }
+            }
+          }
+          }
         });
     },
   },

@@ -48,15 +48,22 @@
               <v-text-field outlined v-model="users.email"></v-text-field>
             </div>
           </v-col>
-          <v-col cols="12">
+          <v-col cols="12" v-if="!isForgot">
             <div>Password</div>
             <div>
               <v-text-field outlined v-model="users.password" type="password"></v-text-field>
             </div>
+              <div class="pl-1" @click="isForgot=true" style="cursor:pointer">
+            Forgot Password?
+          </div>
           </v-col>
+        
         </v-row>
-        <div align="center">
+        <div align="center" v-if="!isForgot">
           <v-btn depressed color="#6609af" dark @click="login" :loading="isLoaded"> Login </v-btn>
+        </div>
+        <div align="center" v-else>
+          <v-btn depressed color="#6609af" dark @click="forgotPass" :loading="isLoaded"> Send </v-btn>
         </div>
       </div>
     </v-card>
@@ -67,6 +74,7 @@
 export default {
   data() {
     return {
+      isForgot:false,
       snackbar:false,
       img_holder: 'image_placeholder.png',
       image: '',
@@ -77,6 +85,14 @@ export default {
     }
   },
   methods: {
+  async  forgotPass(){
+    this.isLoaded=true
+      var response = await this.$axios
+          .post("reset_password/", {email:this.users.email})
+          alert('Successfully sent!')
+          this.isLoaded=false
+    },
+    
      async login() {
       this.isLoaded = true;
       var credentials = {

@@ -1,5 +1,21 @@
 <template>
 <v-form ref="form">
+   <v-overlay
+            :absolute="true"
+            :value="fullscreenImage"
+          >  
+           <v-card height="700" class="d-flex justify-center align-center">
+                <v-img :src="image_view"  width="800">
+                  <div align="end" class="pa-10"> 
+            <div class="pt-16">
+                <v-icon @click="cancelImage" color="red" size="40">
+                mdi-close
+              </v-icon>
+            </div>
+            </div>
+              </v-img>
+           </v-card>
+       </v-overlay>
   <v-dialog v-model="isOpen" width="1000" persistent>
     <v-card class="pa-10">
      <div>
@@ -43,7 +59,7 @@
 
         <div class="hover_pointer pt-10">
           <img
-            @click="$refs.file.click()"
+           @click="viewImage(img_holder)"
             :src="img_holder"
             alt="item_.js"
             height="150"
@@ -69,7 +85,7 @@
 
         <div class="hover_pointer pt-10">
           <img
-            @click="$refs.file.click()"
+          @click="viewImage(img_holder2)"
             :src="img_holder2"
             alt="item_.js"
             height="150"
@@ -95,7 +111,7 @@
 
         <div class="hover_pointer pt-10">
           <img
-            @click="$refs.file.click()"
+           @click="viewImage(img_holder3)"
             :src="img_holder3"
             alt="item_.js"
             height="150"
@@ -165,10 +181,20 @@ img_holder2:'',
         location:''
       },
       buttonLoad: false,
-      img_holder:'image_placeholder.png'
+      img_holder:'image_placeholder.png',
+      fullscreenImage:false,
     };
   },
   methods: {
+     cancelImage(){
+      this.isOpen=true
+      this.fullscreenImage=false
+    },
+    viewImage(image){
+      this.image_view = image
+      this.fullscreenImage = true
+      this.isOpen=false
+    },
        onFileUpload2(e) {
       this.image2 = e;
       e = e.target.files[0];

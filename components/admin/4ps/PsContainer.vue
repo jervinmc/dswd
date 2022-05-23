@@ -301,12 +301,16 @@ date:[],
           console.log(res.data);
           this.events = res.data;
           this.isLoading = false;
-          if(this.$route.query.id!=undefined){
+
+          if(this.isLoaded){
+            this.isLoaded=false
+               if(this.$route.query.id!=undefined){
             for(let key in this.events){
               if(this.events[key].id==this.$route.query.id){
                 this.viewItem(this.events[key],'')
               }
             }
+          }
           }
         });
     },

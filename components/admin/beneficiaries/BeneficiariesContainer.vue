@@ -149,6 +149,7 @@ export default {
   },
   data() {
     return {
+      isLoaded:true,
       items_all:[],
       buttonLoad:false,
       account_type:'',
@@ -284,13 +285,17 @@ export default {
           this.events = res.data;
           this.items_all = res.data
           this.isLoading = false;
-          if(this.$route.query.id!=undefined){
+          if(this.isLoaded){
+            this.isLoaded=false
+               if(this.$route.query.id!=undefined){
             for(let key in this.events){
               if(this.events[key].id==this.$route.query.id){
                 this.viewItem(this.events[key],'')
               }
             }
           }
+          }
+         
         });
     },
   },
