@@ -184,22 +184,359 @@
             </v-col>
           </v-row>
           <v-divider></v-divider>
-           <div class="text-h6"><b>Type of Intervention</b></div>
-          <div>
-            <v-select outlined v-model="users.intervention" :items="['Intake Interview','Letter of Invitation','Briefing / Preparation to Client for Procedural Proceedings','Meditation Dialogue','Home Visitation','Reunification / Re-integration to Family','Intervention/Prevention Proceedings','Rescue Operation','Social Case Study Report','Travel Clearance','Mediation Conference']"></v-select>
-          </div>
-          <div v-if="users.intervention!='' && users.intervention!=undefined">
-            <div class="text-h6"><b>Category</b></div>
+           <div class="text-h6"><b>Category</b></div>
             <div class="pt-5">
               <v-row>
                 <v-col cols="4">
                     <div>Case Category</div>
                     <div>
-                    <v-select outlined v-model="users.case_category" :items="['Child','Women','Men']"></v-select>
+                    <v-select outlined readonly v-model="users.case_category" :items="['Child','Women','Men']"></v-select>
                     </div>
                   </v-col>
               </v-row>
             </div>
+               <div class="text-h6">Case Category(Child)</div>
+                    <div  v-if="users.case_category=='Child'" >
+                     <v-row>
+                       <v-col cols="3">
+                          <v-checkbox
+                          v-model="selected_case"
+                          label="Abandoned"
+                          value="Abandoned"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Neglected"
+                          value="Neglected"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Voluntary committed/surrendered"
+                          value="Voluntary committed/surrendered"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Sexually Abused"
+                          value="Sexually Abused"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Sexually Exploited"
+                          value="Sexually Exploited"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Physically Abused"
+                          value="Physically Abused"
+                        ></v-checkbox>
+                       </v-col>
+                         <v-col cols="3">
+                          <v-checkbox
+                          v-model="selected_case"
+                          label="Victims of Bullying"
+                          value="Victims of Bullying"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Children in Emergency Situation"
+                          value="Children in Emergency Situation"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Children in Situations of Armed Conflict"
+                          value="Children in Situations of Armed Conflict"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Victims of Child Labor"
+                          value="Victims of Child Labor"
+                        ></v-checkbox>
+                         <v-checkbox
+                          v-model="selected_case"
+                          label="Victims of Child Trafficking"
+                          value="Victims of Child Trafficking"
+                        ></v-checkbox>
+                         <v-checkbox
+                          v-model="selected_case"
+                          label="Street Children"
+                          value="Street Children"
+                        ></v-checkbox>
+                       </v-col>
+                         <v-col cols="3">
+                          <v-checkbox
+                          v-model="selected_case"
+                          label="Victims of Illegal Recruitment"
+                          value="Victims of Illegal Recruitment"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Children with HIV/AIDS"
+                          value="Children with HIV/AIDS"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Children with Disabilities"
+                          value="Children with Disabilities"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Children with Behavioral Problem"
+                          value="Children with Behavioral Problem"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Children with Emotional Problem"
+                          value="Children with Emotional Problem"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Children in Marital Conflict(Custody)"
+                          value="Children in Marital Conflict(Custody)"
+                        ></v-checkbox>
+                       </v-col>
+                         <v-col cols="3">
+                          <v-checkbox
+                          v-model="selected_case"
+                          label="Children in Marital Conflict(Support)"
+                          value="Children in Marital Conflict(Support)"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Stow Away"
+                          value="Stow Away"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Missing"
+                          value="Missing"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Children with Problem in Relationship(Parent/Child)"
+                          value="Children with Problem in Relationship(Parent/Child)"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Children with Problem in Relationship(Siblings)"
+                          value="Children with Problem in Relationship(Siblings)"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Others"
+                          value="Others"
+                        ></v-checkbox>
+                       </v-col>
+                     </v-row>
+                    </div>
+                    <div v-else >
+                     <v-row>
+                       <v-col cols="3">
+                          <v-checkbox
+                          v-model="selected_case"
+                          label="Sexually Abused"
+                          value="Sexually Abused"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Victims of Armed Conflict"
+                          value="Victims of Armed Conflict"
+                        ></v-checkbox>
+                        
+                       </v-col>
+                         <v-col cols="3">
+                         <v-checkbox
+                          v-model="selected_case"
+                          label="Physically Abused/Maltreated/Battered"
+                          value="Physically Abused/Maltreated/Battered"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Women/Men in Detention"
+                          value="Women/Men in Detention"
+                        ></v-checkbox>
+                       </v-col>
+                         <v-col cols="3">
+                          <v-checkbox
+                          v-model="selected_case"
+                          label="Victims of Illegal Recruitment"
+                          value="Victims of Illegal Recruitment"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Women/Men in Marital Confict"
+                          value="Women/Men in Marital Confict"
+                        ></v-checkbox>
+                       </v-col>
+                         <v-col cols="3">
+                          <v-checkbox
+                          v-model="selected_case"
+                          label="Victims of Involuntary Prostitution"
+                          value="Victims of Involuntary Prostitution"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_case"
+                          label="Women/Men in Marital Conflict"
+                          value="Women/Men in Marital Conflict"
+                        ></v-checkbox>
+                       </v-col>
+                     </v-row>
+                    </div>
+                
+           <div class="text-h6"><b>Type of Intervention</b></div>
+           <div >
+                     <v-row>
+                       <v-col cols="3">
+                          <v-checkbox
+                          v-model="selected_intervention"
+                          label="Intake Interview"
+                          value="Intake Interview"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_intervention"
+                          label="Letter of Invitation"
+                          value="Letter of Invitation"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_intervention"
+                          label="Briefing/Preparation to Client for Procedural Proceedings"
+                          value="Briefing/Preparation to Client for Procedural Proceedings"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_intervention"
+                          label="Mediation Dialouge"
+                          value="Mediation Dialouge"
+                        ></v-checkbox>
+                       </v-col>
+                         <v-col cols="3">
+                          <v-checkbox
+                          v-model="selected_intervention"
+                          label="Home Visitation"
+                          value="Home Visitation"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_intervention"
+                          label="Reunification / Re-integration to Family"
+                          value="Reunification / Re-integration to Family"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_intervention"
+                          label="Intervention / Prevention Proceedings"
+                          value="Intervention / Prevention Proceedings"
+                        ></v-checkbox>
+                       </v-col>
+                         <v-col cols="3">
+                          <v-checkbox
+                          v-model="selected_intervention"
+                          label="Rescue Operation"
+                          value="Rescue Operation"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_intervention"
+                          label="Social Case Study Report"
+                          value="Social Case Study Report"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_intervention"
+                          label="Travel Clearance (Local,Abroad)"
+                          value="Travel Clearance (Local,Abroad)"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_intervention"
+                          label="Mediation Conference/Family"
+                          value="Mediation Conference/Family"
+                        ></v-checkbox>
+                       </v-col>
+                         <v-col cols="3">
+                          <v-checkbox
+                          v-model="selected_intervention"
+                          label="Psychosocial Processing"
+                          value="Psychosocial Processing"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_intervention"
+                          label="Attendance to Court Hearing"
+                          value="Attendance to Court Hearing"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_intervention"
+                          label="Others"
+                          value="Others"
+                        ></v-checkbox>
+                       </v-col>
+                     </v-row>
+                    </div>
+            <div class="text-h6"><b>Referral</b></div>
+           <div >
+                     <v-row>
+                       <v-col cols="3">
+                          <v-checkbox
+                          v-model="selected_referral"
+                          label="Medico Legal Exam"
+                          value="Medico Legal Exam"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_referral"
+                          label="Temporary Shelter"
+                          value="Temporary Shelter"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_referral"
+                          label="MSWDO / CSWDO / LSWDO"
+                          value="MSWDO / CSWDO / LSWDO"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_referral"
+                          label="Refer to DSWD Region IV-A"
+                          value="Refer to DSWD Region IV-A"
+                        ></v-checkbox>
+                       </v-col>
+                         <v-col cols="3">
+                          <v-checkbox
+                          v-model="selected_referral"
+                          label="Medical Check up"
+                          value="Medical Check up"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_referral"
+                          label="Refer to Court / PAO"
+                          value="Refer to Court / PAO"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_referral"
+                          label="LGU-Case Management"
+                          value="LGU-Case Management"
+                        ></v-checkbox>
+                           <v-checkbox
+                          v-model="selected_referral"
+                          label="Refer to Cit, Health Office"
+                          value="Refer to Cit, Health Office"
+                        ></v-checkbox>
+                       </v-col>
+                         <v-col cols="3">
+                       
+                        <v-checkbox
+                          v-model="selected_referral"
+                          label="Psychological Evaluation (NCMH/Private Psychiatrist/Psychologist)"
+                          value="Psychological Evaluation (NCMH/Private Psychiatrist/Psychologist)"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_referral"
+                          label="Legal Assistance: Affidavit, Bail Processing, ROR"
+                          value="Legal Assistance: Affidavit, Bail Processing, ROR"
+                        ></v-checkbox>
+                        <v-checkbox
+                          v-model="selected_referral"
+                          label="Others"
+                          value="Others"
+                        ></v-checkbox>
+                       </v-col>    
+                     </v-row>
+                    </div>
+          <!-- <div>
+            <v-select outlined v-model="users.intervention" :items="['Intake Interview','Letter of Invitation','Briefing / Preparation to Client for Procedural Proceedings','Meditation Dialogue','Home Visitation','Reunification / Re-integration to Family','Intervention/Prevention Proceedings','Rescue Operation','Social Case Study Report','Travel Clearance','Mediation Conference']"></v-select>
+          </div> -->
+          <div v-if="users.intervention!='' && users.intervention!=undefined">
+           
             <div class="text-h6"><b>Information of the alleged perpetrator</b></div>
             <div class="pt-5">
               <v-row>
@@ -695,6 +1032,7 @@ export default {
   },
   data() {
     return {
+
       items_all:[],
       date:[],
       search:'',
@@ -707,7 +1045,46 @@ export default {
         events:[],
       selectedItem:{},
       isLoading: false,
-      users: [],
+      users:{
+        firstname:"",
+        lastname:'',
+        middlename:'',
+        birthplace:'',
+        age:'',
+        sex:'',
+        religion:'',
+        number_of_siblings:'',
+        address:'',
+        contact_number:'',
+        mothername:'',
+        birthplace_mother:'',
+        occupation_mother:'',
+        referral:'',
+    mother_income:'',
+    social_worker:'',
+    intervention:'',
+    source_of_referral:"",
+    perpetrator_occupation:'',
+    perpetrator_address:'',
+    selected_referral:[],
+    perpetrator_status:'',
+    remarks:'',
+    perpetrator_name:'',
+    perpetrator_relation:'',
+    perpetrator_nickname:'',
+    perpetrator_sex:'',
+    perpetrator_age:'',
+
+      parentsaddress:'',
+
+        attainment:'',
+        attended:'',
+        fathername:'',
+        birthplace_father:'',
+        occupation_father:'',
+        father_income:'',
+      },
+      selected_case:[],
       dialogAdd:false,
       isCategory:false,
       isAdd:true,
@@ -739,7 +1116,34 @@ export default {
         if(this.users.intervention!='' && this.users.intervention!=undefined){
           status = 'Approved'
         }
+      this.$axios.post(`/casecategory-bulk/`,{cases:this.selected_case,referral:this.selected_referral,intervention:this.selected_intervention,case_id:this.users.id},{
+         headers:{
+          Authorization:`Bearer ${localStorage.getItem('token')}`
+        }
+      })
       this.$axios.patch(`/cases/${this.users.id}/`,{
+          firstname:this.users.firstname,
+          lastname:this.users.lastname,
+          middlename:this.users.middlename,
+          birthplace:this.users.birthplace,
+          age:this.users.age,
+          sex:this.users.sex,
+          religion:this.users.religion,
+          number_of_siblings:this.users.number_of_siblings,
+          address:this.users.address,
+          contact_number:this.users.contact_number,
+          attainment:this.users.attainment,
+          attended:this.users.attended,
+          fathername:this.users.fathername,
+          birthplace_father:this.users.birthplace_father,
+          occupation:this.users.occupation_father,
+          father_income:this.users.father_income,
+          mothername:this.users.mothername,
+          birthplace_mother:this.users.birthplace_mother,
+          occupation_mother:this.users.occupation_mother,
+          mother_income:this.users.mother_income,
+          parentsaddress:this.users.parentsaddress,
+          remarks:this.users.remarks,
           perpetrator_name:this.users.perpetrator_name,
           perpetrator_nickname:this.users.perpetrator_nickname,
           perpetrator_age:this.users.perpetrator_age,
@@ -767,6 +1171,16 @@ export default {
       })
       },
     view(item){
+      this.$axios.get(`/casecategory-userid/${item.id}/`,{
+         headers:{
+          Authorization:`Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      .then((res)=>{
+        this.selected_case=res.data.cases
+        this.selected_intervention = res.data.intervention
+        this.selected_referral = res.data.referral
+      })
       this.users=item 
       this.viewDetails=true
     },

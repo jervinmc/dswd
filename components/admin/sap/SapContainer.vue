@@ -269,20 +269,21 @@ components:{
       })
       },
     view(item){
-      this.sap_items=[]
-      this.users=item 
-      this.loadingSap=true
-      this.viewDetails=true
-      this.$axios.post('/barangaysap/',{barangay:item.name},{
-        headers:{
-          Authorization:`Bearer ${localStorage.getItem('token')}`
-        }
-      })
-      .then((res)=>{
-        console.log(res)
-        this.loadingSap=false
-        this.sap_items=res.data
-      })
+      window.location.href=`sap_barangay?barangay=${item.name}`
+      // this.sap_items=[]
+      // this.users=item 
+      // this.loadingSap=true
+      // this.viewDetails=true
+      // this.$axios.post('/barangaysap/',{barangay:item.name},{
+      //   headers:{
+      //     Authorization:`Bearer ${localStorage.getItem('token')}`
+      //   }
+      // })
+      // .then((res)=>{
+      //   console.log(res)
+      //   this.loadingSap=false
+      //   this.sap_items=res.data
+      // })
 
     },
       approve(item){

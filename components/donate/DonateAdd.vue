@@ -2,7 +2,20 @@
 <v-form ref="form">
   <v-dialog v-model="isOpen" width="1000" persistent>
     <v-card class="pa-10">
+      <div>
+        <v-icon color="red" @click="cancel">mdi-close</v-icon>
+      </div>
       <div align="center" class="text-h6">Request Donation</div>
+      <div>
+        <v-row>
+          <v-col  cols="6" align="center">
+              <v-img src="/main_logo.png" height="80" width="80"></v-img>
+          </v-col>
+          <v-col cols="6" align="center">
+             <v-img src="/calamba_logo.png" height="80" width="80"></v-img>
+          </v-col>
+        </v-row>
+      </div>
       <v-col cols="12" class="px-0">
         <div>Lastname</div>
         <div>
@@ -33,7 +46,9 @@
           <v-textarea outlined v-model="events.remarks"></v-textarea>
         </div>
       </v-col>
-       <v-col>
+    <v-row>
+        <v-col>
+           <v-col>
         <span class="pt-2 pr-10 pb-10"><b>Upload Image<v-icon @click="$refs.file.click()">mdi-plus</v-icon></b></span>
 
         <div class="hover_pointer pt-10">
@@ -48,15 +63,70 @@
         </div>
       </v-col>
       <v-col class="d-none">
-        <input
-          style="display: none"
-          type="file"
-          id="fileInput"
-          ref="file"
-          accept="image/png, image/jpeg"
-          @change="onFileUpload"
-        />
+              <input
+                style="display: none"
+                type="file"
+                id="fileInput"
+                ref="file"
+                accept="image/png, image/jpeg"
+                @change="onFileUpload"
+              />
+            </v-col>
+        </v-col>
+        <v-col>
+           <v-col>
+        <span class="pt-2 pr-10 pb-10"><b>Upload Image 2<v-icon @click="$refs.file2.click()">mdi-plus</v-icon></b></span>
+
+        <div class="hover_pointer pt-10">
+          <img
+            @click="$refs.file.click()"
+            :src="img_holder2"
+            alt="item_.js"
+            height="150"
+            width="150"
+            class="mb-0"
+          />
+        </div>
       </v-col>
+      <v-col class="d-none">
+              <input
+                style="display: none"
+                type="file"
+                id="fileInput2"
+                ref="file2"
+                accept="image/png, image/jpeg"
+                @change="onFileUpload2"
+              />
+            </v-col>
+        </v-col>
+        <v-col>
+           <v-col>
+        <span class="pt-2 pr-10 pb-10"><b>Upload Image 3<v-icon @click="$refs.file3.click()">mdi-plus</v-icon></b></span>
+
+        <div class="hover_pointer pt-10">
+          <img
+            @click="$refs.file.click()"
+            :src="img_holder3"
+            alt="item_.js"
+            height="150"
+            width="150"
+            class="mb-0"
+          />
+        </div>
+      </v-col>
+      <v-col class="d-none">
+              <input
+                style="display: none"
+                type="file"
+                id="fileInput3"
+                ref="file3"
+                accept="image/png, image/jpeg"
+                @change="onFileUpload3"
+              />
+            </v-col>
+        </v-col>
+      </v-row>
+
       <v-card-actions>
         <v-row align="center">
           <v-col align="end">
@@ -86,6 +156,8 @@ export default {
     items() {
         this.events=this.items
         this.img_holder=this.items.image
+        this.img_holder2=this.items.image1
+        this.img_holder3=this.items.image2
     },
   },
   data() {
@@ -93,7 +165,11 @@ export default {
       room_list:['Standard','Deluxe','Suite'],
       events: [],
       buttonLoad: false,
-      img_holder:'image_placeholder.png'
+      img_holder:'image_placeholder.png',
+      image2:'',
+      image3:'',
+img_holder2:'',
+      img_holder3:'',
     };
   },
   methods: {
@@ -117,6 +193,12 @@ export default {
         if (this.image != null && this.image != "") {
           form_data.append("image", this.image);
     
+        }
+        if (this.image2 != null && this.image2 != "") {
+          form_data.append("image1", this.image2);
+        }
+        if (this.image3 != null && this.image3 != "") {
+          form_data.append("image2", this.image3);
         }
         form_data.append("lastname", this.events.lastname);
         form_data.append("middlename", this.events.middlename);
@@ -183,6 +265,50 @@ export default {
       if (e == null) {
       } else {
         this.url, (this.img_holder = URL.createObjectURL(e));
+      }
+    },
+     onFileUpload2(e) {
+      this.image2 = e;
+      e = e.target.files[0];
+      if (e["name"].length > 100) {
+        alert("255 characters exceeded filename.");
+        return;
+      }
+      try {
+        if (e.size > 16000000) {
+          alert("Only 15mb file can be accepted.");
+          return;
+        }
+      } catch (error) {
+        alert(error);
+        return;
+      }
+      this.image2 = e;
+      if (e == null) {
+      } else {
+        this.url, (this.img_holder2 = URL.createObjectURL(e));
+      }
+    },
+     onFileUpload3(e) {
+      this.image3 = e;
+      e = e.target.files[0];
+      if (e["name"].length > 100) {
+        alert("255 characters exceeded filename.");
+        return;
+      }
+      try {
+        if (e.size > 16000000) {
+          alert("Only 15mb file can be accepted.");
+          return;
+        }
+      } catch (error) {
+        alert(error);
+        return;
+      }
+      this.image3 = e;
+      if (e == null) {
+      } else {
+        this.url, (this.img_holder3 = URL.createObjectURL(e));
       }
     },
     cancel() {
