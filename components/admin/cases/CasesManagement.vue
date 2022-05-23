@@ -19,7 +19,7 @@
     </v-card>
   </v-dialog>
    <v-dialog v-model="viewDetails" width="1000" persistent>
-    <v-card class="pa-10">
+    <v-card class="pa-10" ref="content">
     <div align="center" class="text-h6">Case Form</div>
       <div>
          <v-card width="1300">
@@ -899,6 +899,9 @@
             <v-col>
                 <v-btn color="success" text :loading="buttonLoad" @click="editItem"> Confirm </v-btn>
             </v-col>
+            <v-col>
+                <v-btn color="success" text :loading="buttonLoad" @click="downloadPdf"> Print </v-btn>
+            </v-col>
         </v-row>
       </v-card-actions>
     </v-card>
@@ -1029,8 +1032,7 @@
 </template>
 
 <script>
-
-
+import jspdf from 'jspdf'
 export default {
   created() {
     this.loadData();
@@ -1107,6 +1109,14 @@ export default {
     };
   },
   methods: {
+    downloadPdf(){
+      const doc = new jspdf()
+      const html = this.$refs.content.innerHTML
+      doc.fromHTML(html,15,15,{
+        width:150
+      })
+      doc.save('output.pdf')
+    },
     changeDate(){
           this.items_all = []
            for(let key in this.events){
