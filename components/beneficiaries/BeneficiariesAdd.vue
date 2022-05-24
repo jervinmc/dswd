@@ -18,6 +18,16 @@
        </v-overlay>
   <v-dialog v-model="isOpen" width="1000" persistent>
     <v-card class="pa-10">
+         <div ref="content"  class="d-none">
+        <div align="center" style="font-size:30px;text-align:center;padding-bottom:20px" class="text-h6">
+         <b> Beneficiaries Form</b>
+        </div>
+         <div>Fullname : {{events.firstname}} {{events.lastname}}</div>
+          <div>Occupation : {{events.occupation}}</div>
+           <div>Beneficiaries Type : {{events.beneficiaries_type}} {{events.lastname}}</div>
+            <div>Location : {{events.location}} {{events.lastname}}</div>
+         <div>Mode of Payment : {{events.mop}}</div>
+         </div>
        <div>
         <v-icon color="red" @click="cancel">mdi-close</v-icon>
       </div>
@@ -60,6 +70,12 @@
         <div>Beneficiaries Type</div>
         <div>
           <v-select outlined :items="['Burial Type','Medical Type','Educational Type']" v-model="events.beneficiaries_type"></v-select>
+        </div>
+      </v-col>
+        <v-col cols="12" class="px-0">
+        <div>Contact Number</div>
+        <div>
+          <v-text-field outlined v-model="events.contact_number"></v-text-field>
         </div>
       </v-col>
       <v-col cols="12" class="px-0">
@@ -169,6 +185,17 @@
               Save
             </v-btn>
           </v-col>
+           <v-col>
+            <v-btn
+              color="success"
+              text
+              v-if="!isAdd"
+              @click="downloadPdf"
+              :loading="buttonLoad"
+            >
+              Print
+            </v-btn>
+          </v-col>
         </v-row>
       </v-card-actions>
     </v-card>
@@ -177,6 +204,7 @@
 </template>
 
 <script>
+import jspdf from 'jspdf'
 export default {
   props: ["isOpen", "items", "isAdd"],
   watch: {
@@ -209,6 +237,15 @@ export default {
     };
   },
   methods: {
+        downloadPdf(){
+       const doc = new jspdf()
+      const html = this.$refs.content.innerHTML
+      doc.fromHTML(html,15,15,{
+        width:150
+      })
+      doc.save('output.pdf')
+    
+    },
      cancelImage(){
       this.isOpen=true
       this.fullscreenImage=false
@@ -245,6 +282,7 @@ export default {
           form_data.append("image2", this.image3);
         }
         form_data.append("lastname", this.events.lastname);
+         form_data.append("contact_number", this.events.contact_number);
         form_data.append("middlename", this.events.middlename);
         form_data.append("firstname", this.events.firstname);
         form_data.append("occupation", this.events.occupation);

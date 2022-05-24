@@ -19,7 +19,33 @@
     </v-card>
   </v-dialog>
    <v-dialog v-model="viewDetails" width="1000" persistent>
-    <v-card class="pa-10" ref="content">
+    <v-card class="pa-10" >
+      <div ref="content" v-if="isDownload" class="d-none">
+        <div align="center" style="font-size:30px;text-align:center;padding-bottom:20px" class="text-h6">
+         <b> Case Form</b>
+        </div>
+            <div>Firstname : {{users.firstname}} {{users.lastname}}</div>
+           <div>Birthplace : {{users.birthplace}}</div>
+           <div>Age : {{users.age}}</div>
+           <div>Sex : {{users.sex}}</div>
+            <div>Religion : {{users.religion}}</div>
+            <div>Number of Siblings : {{users.number_of_siblings}}</div>
+             <div>Address: {{users.address}}</div>
+              <div>Contact Number: {{users.contact_number}}</div>
+             <div>Last School Attended: {{users.attended}}</div>
+               <div>Name of Father: {{users.fathername}}</div>
+                 <div>Father's birthplace: {{users.birthplace_father}}</div>
+                   <div>Educational Attainment: {{users.attainment}}</div>
+          <div>Monthly Income(Father): {{users.father_income}}</div>
+               <div>Name of Mother: {{users.mothername}}</div>
+                 <div>Occupation: {{users.occupation_mother}}</div>
+                   <div>Monthly Income: {{users.mother_income}}</div>
+           <div>Parent's Address: {{users.parentsaddress}}</div>
+        <div>Case Category Listed: {{selected_case}}</div>
+               <div>Type of Intervention: {{selected_intervention}}</div>
+                 <div>Referral: {{selected_referral}}</div>
+              
+    </div>
     <div align="center" class="text-h6">Case Form</div>
       <div>
          <v-card width="1300">
@@ -899,8 +925,8 @@
             <v-col>
                 <v-btn color="success" text :loading="buttonLoad" @click="editItem"> Confirm </v-btn>
             </v-col>
-            <v-col>
-                <v-btn color="success" text :loading="buttonLoad" @click="downloadPdf"> Print </v-btn>
+            <v-col v-if="!isAdd">
+                <v-btn color="success"  text :loading="buttonLoad" @click="downloadPdf"> Print </v-btn>
             </v-col>
         </v-row>
       </v-card-actions>
@@ -1039,6 +1065,7 @@ export default {
   },
   data() {
     return {
+      isDownload:true,
       isLoaded:true,
       items_all:[],
       date:[],
@@ -1110,12 +1137,14 @@ export default {
   },
   methods: {
     downloadPdf(){
-      const doc = new jspdf()
+
+       const doc = new jspdf()
       const html = this.$refs.content.innerHTML
       doc.fromHTML(html,15,15,{
         width:150
       })
       doc.save('output.pdf')
+    
     },
     changeDate(){
           this.items_all = []

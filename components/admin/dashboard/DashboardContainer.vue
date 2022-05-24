@@ -292,12 +292,12 @@ export default {
         })
         .then((res) => {
           this.search_list = res.data;
-            var women =  this.search_list.filter(item => item.case_category=='Women')
+            var women =  this.search_list.filter(item => item.case_category=='Women' && item.status=='Approved')
           this.chartData1.datasets[0].data[0]=women.length
        
-          var child =  this.search_list.filter(item => item.case_category=='Child')
+          var child =  this.search_list.filter(item => item.case_category=='Child' && item.status=='Approved')
           this.chartData1.datasets[0].data[1]=child.length
-          var men =  this.search_list.filter(item => item.case_category=='Men')
+          var men =  this.search_list.filter(item => item.case_category=='Men' && item.status=='Approved')
           this.chartData1.datasets[0].data[2]=men.length
         
           console.log(res.data);

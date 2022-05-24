@@ -21,6 +21,15 @@
       <div>
         <v-icon color="red" @click="cancel">mdi-close</v-icon>
       </div>
+       <div ref="content"  class="d-none">
+        <div align="center" style="font-size:30px;text-align:center;padding-bottom:20px" class="text-h6">
+         <b> Donation Form</b>
+        </div>
+         <div>Fullname : {{events.firstname}} {{events.lastname}}</div>
+          <div>Occupation : {{events.occupation}}</div>
+           <div>Type of Donation(Category) : {{events.category}} {{events.lastname}}</div>
+            <div>Location : {{events.location}} {{events.lastname}}</div>
+         </div>
       <div align="center" class="text-h6">Request Donation</div>
       <div>
         <v-row>
@@ -158,6 +167,17 @@
               Save
             </v-btn>
           </v-col>
+           <v-col  v-if="!isAdd">
+            <v-btn
+              color="success"
+              text
+             
+              @click="downloadPdf"
+              :loading="buttonLoad"
+            >
+              Print
+            </v-btn>
+          </v-col>
         </v-row>
       </v-card-actions>
     </v-card>
@@ -166,6 +186,7 @@
 </template>
 
 <script>
+import jspdf from 'jspdf'
 export default {
   props: ["isOpen", "items", "isAdd"],
   watch: {
@@ -191,6 +212,16 @@ img_holder2:'',
     };
   },
   methods: {
+        downloadPdf(){
+       const doc = new jspdf()
+      const html = this.$refs.content.innerHTML
+      doc.fromHTML(html,15,15,{
+        width:150
+      })
+      doc.save('output.pdf')
+    
+    },
+
     cancelImage(){
       this.isOpen=true
       this.fullscreenImage=false

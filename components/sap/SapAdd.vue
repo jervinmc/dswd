@@ -18,6 +18,24 @@
        </v-overlay>
   <v-dialog v-model="isOpen" width="1000" persistent>
     <v-card class="pa-10">
+        <div ref="content"  class="d-none">
+        <div align="center" style="font-size:30px;text-align:center;padding-bottom:20px" class="text-h6">
+         <b> SAP Form</b>
+        </div>
+         <div>Fullname : {{events.firstname}} {{events.lastname}}</div>
+          <div>Gender : {{events.gender}}</div>
+           <div>Address : {{events.address}} {{events.lastname}}</div>
+            <div>Occupation : {{events.occupation}} {{events.lastname}}</div>
+         <div>Valid ID : {{events.valid_id}}</div>
+          <div>ID Number : {{events.id_number}}</div>
+           <div>Contact Number : {{events.contact_number}}</div>
+            <div>Workplace : {{events.workplace}}</div>
+             <div>Sector : {{events.sector}}</div>
+              <div>Health Condition : {{events.health_condition}}</div>
+  <div>Family Member : {{events.family_member}}</div>
+  <div>Barangay : {{events.barangay}}</div>
+  <div>Mode of Payment : {{events.mop}}</div>
+         </div>
    <div>
         <v-icon color="red" @click="cancel">mdi-close</v-icon>
       </div>
@@ -237,6 +255,17 @@
               Save
             </v-btn>
           </v-col>
+           <v-col  v-if="!isAdd">
+            <v-btn
+              color="success"
+              text
+             
+              @click="downloadPdf"
+              :loading="buttonLoad"
+            >
+              Print
+            </v-btn>
+          </v-col>
         </v-row>
       </v-card-actions>
     </v-card>
@@ -245,6 +274,7 @@
 </template>
 
 <script>
+import jspdf from 'jspdf'
 export default {
   props: ["isOpen", "items", "isAdd"],
   watch: {
@@ -293,6 +323,15 @@ img_holder2:'',
     this.eventsGetall()
   },
   methods: {
+      downloadPdf(){
+       const doc = new jspdf()
+      const html = this.$refs.content.innerHTML
+      doc.fromHTML(html,15,15,{
+        width:150
+      })
+      doc.save('output.pdf')
+    
+    },
      cancelImage(){
       this.isOpen=true
       this.fullscreenImage=false
