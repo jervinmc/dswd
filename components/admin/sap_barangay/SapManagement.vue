@@ -63,7 +63,7 @@
         </v-btn>
       </v-col> -->
     </v-row>
-     <JsonExcel :data="items_download" name="sap.xls">
+     <JsonExcel :data="items_download_approved" name="sap.xls">
                 <v-btn>Download</v-btn>
               </JsonExcel>
      <v-data-table 
@@ -113,7 +113,7 @@ export default {
      items_download(){
       return this.events.filter(item=>{
         return item.status!='Approved'
-      })}
+      })},
      },
     components:{
         JsonExcel,
@@ -124,6 +124,8 @@ export default {
   },
   data() {
     return {
+      items_download_approved:[],
+      image_view:'',
       isLoaded:true,
     barangay:'',
       search:'',
@@ -290,9 +292,9 @@ export default {
         }
       })
       .then((res)=>{
-        console.log(res)
         this.isLoading=false
         this.events=res.data
+        this.items_download_approved = this.events.filter(data=>data.status=='Approved')
         if(this.isLoaded){
             this.isLoaded=false
                if(this.$route.query.id!=undefined){

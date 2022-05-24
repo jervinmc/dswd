@@ -287,6 +287,7 @@ export default {
   },
   data() {
     return {
+      image_view:'',
       image2:'',
       image3:'',
 img_holder2:'',
