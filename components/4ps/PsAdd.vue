@@ -4,7 +4,7 @@
             :absolute="true"
             :value="fullscreenImage"
           >  
-           <v-card height="700">
+           <v-card height="700" class="d-flex justify-center align-center">
                 <v-img :src="image_view"  width="800">
                   <div align="end" class="pa-10"> 
             <div class="pt-16">
