@@ -240,6 +240,12 @@
             </v-btn>
         </v-col>
       </v-row>
+      <div>
+         <div>
+          Note : *Sector-   A. Nakakatanda B. Buntis C. Nag papasusong-ina  D. PWD E. Solo parent F. Walang tirahan
+*health condition- 1. Sakit sa puso 2. Altapresyon 3. Sakit sa baga 4. Dyabetis 5. Kanser
+        </div>
+      </div>
       <v-card-actions>
         <v-row align="center">
           <v-col align="end">
@@ -267,6 +273,7 @@
             </v-btn>
           </v-col>
         </v-row>
+       
       </v-card-actions>
     </v-card>
   </v-dialog>
